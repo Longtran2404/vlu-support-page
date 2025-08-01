@@ -1,13 +1,10 @@
 'use client'
-import { useLang } from './LanguageProvider'
-
 import Image from 'next/image';
 import Link from 'next/link';
 
 const LOGO_URL = "https://cdn.haitrieu.com/wp-content/uploads/2022/12/Logo-Dai-Hoc-Van-Lang-H.png";
 
 export default function Footer() {
-  const { lang } = useLang()
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

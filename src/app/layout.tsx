@@ -1,23 +1,11 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import { LanguageProvider } from '@/context/LanguageProvider';
-import NavBar from '@/components/NavBar';
-import SubNavigation from '@/components/SubNavigation';
-import Footer from '@/components/Footer';
-import Chatbot from '@/components/Chatbot';
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff2",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff2",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import LanguageProvider from '../components/LanguageProvider';
+import NavBar from '../components/NavBar';
+import SubNavigation from '../components/SubNavigation';
+import Footer from '../components/Footer';
+import Chatbot from '../components/Chatbot';
 
 export const metadata: Metadata = {
   title: "Trung tâm Hỗ trợ Sinh viên - Đại học Văn Lang",
@@ -31,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="antialiased font-sans">
         <LanguageProvider>
           <NavBar />
           <SubNavigation />

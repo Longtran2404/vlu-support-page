@@ -3,13 +3,11 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useLanguage } from '@/context/LanguageProvider';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const LOGO_URL = "https://cdn.haitrieu.com/wp-content/uploads/2022/12/Logo-Dai-Hoc-Van-Lang-H.png";
 
 export default function NavBar() {
-  const { t } = useLanguage();
 
   const topNavItems = [
     { href: '#', label: 'Trang chủ', color: 'bg-red-600' },

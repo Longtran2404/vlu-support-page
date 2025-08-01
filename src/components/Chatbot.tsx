@@ -46,7 +46,7 @@ export default function Chatbot() {
       const data = await res.json();
       let botReply = 'Không nhận được phản hồi từ webhook!';
       if (Array.isArray(data) && data.length > 0) {
-        const first = (data as any[])[0].json || {};
+        const first = (data as Array<{json?: {reply?: string; output?: string; reply_message?: string}}>)[0].json || {};
         botReply = first.reply || first.output || first.reply_message || botReply;
       }
       setMessages(prev => [...prev, { role: 'bot', content: botReply }]);
