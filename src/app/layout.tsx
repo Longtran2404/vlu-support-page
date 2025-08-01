@@ -5,6 +5,7 @@ import LanguageProvider from '../components/LanguageProvider'
 import NavBar from '../components/NavBar'
 import Sidebar from '../components/Sidebar'
 import Footer from '../components/Footer'
+import Chatbot from '../components/Chatbot'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </main>
           </div>
           <Footer />
+          <Chatbot />
         </LanguageProvider>
       </body>
     </html>
