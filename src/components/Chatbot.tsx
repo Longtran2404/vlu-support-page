@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const LOGO_URL = "https://insacmau.com/wp-content/uploads/2023/02/logo-van-lang-600x686.png";
 const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
@@ -10,13 +10,25 @@ export default function Chatbot() {
     [{ role: "bot", content: DEFAULT_MESSAGE }]
   );
   const [input, setInput] = useState("");
+  const sendTimes = useRef<number[]>([]);
 
   // Gửi tin nhắn tới webhook
   async function sendMessage(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim()) return;
 
-    setMessages([...messages, { role: "user", content: input }]);
+    // Xóa input ngay khi gửi
+    setInput("");
+
+    // Kiểm tra spam: 5 lần gửi trong 2 giây
+    const now = Date.now();
+    sendTimes.current = [...sendTimes.current, now].filter(t => now - t <= 2000);
+    if (sendTimes.current.length >= 5) {
+      setMessages(prev => [...prev, { role: "bot", content: "Bạn đang spam, vui lòng chờ!" }]);
+      return;
+    }
+
+    setMessages(prev => [...prev, { role: "user", content: input }]);
 
     // Gửi tới webhook
     const res = await fetch("https://reindeer-tight-firstly.ngrok-free.app/webhook-test/4f0cedee-5eea-42d4-bd31-07b76a11ef82", {
@@ -26,20 +38,18 @@ export default function Chatbot() {
     });
 
     if (!res.ok) {
-      setMessages((prev) => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi!" }]);
-      setInput("");
+      setMessages(prev => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi!" }]);
       return;
     }
 
     const data = await res.json();
-    console.log("Webhook response:", data); // Thêm dòng này để xem dữ liệu trả về
+    const botReply = data.reply || data.output; // Ưu tiên reply, nếu không có thì lấy output
 
-    if (!data.reply) {
-      setMessages((prev) => [...prev, { role: "bot", content: "Không nhận được phản hồi từ webhook!" }]);
+    if (!botReply) {
+      setMessages(prev => [...prev, { role: "bot", content: "Không nhận được phản hồi từ webhook!" }]);
     } else {
-      setMessages((prev) => [...prev, { role: "bot", content: data.reply }]);
+      setMessages(prev => [...prev, { role: "bot", content: botReply }]);
     }
-    setInput("");
   }
 
   return (
