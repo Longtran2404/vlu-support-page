@@ -11,6 +11,7 @@ export default function Chatbot() {
     [{ role: "bot", content: DEFAULT_MESSAGE }]
   );
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const sendTimes = useRef<number[]>([]);
 
   // Gửi tin nhắn tới webhook
@@ -20,12 +21,14 @@ export default function Chatbot() {
     if (!text) return;
 
     setInput(""); // Xóa input ngay khi gửi
+    setIsLoading(true); // Bắt đầu loading
 
     // Kiểm tra spam: 5 lần gửi trong 2 giây
     const now = Date.now();
     sendTimes.current = [...sendTimes.current, now].filter(t => now - t <= 2000);
     if (sendTimes.current.length >= 5) {
       setMessages(prev => [...prev, { role: "bot", content: "Bạn đang spam, vui lòng chờ!" }]);
+      setIsLoading(false);
       return;
     }
 
@@ -40,6 +43,7 @@ export default function Chatbot() {
 
       if (!res.ok) {
         setMessages(prev => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi!" }]);
+        setIsLoading(false);
         return;
       }
 
@@ -69,15 +73,20 @@ export default function Chatbot() {
       setMessages(prev => [...prev, { role: 'bot', content: botReply }]);
     } catch {
       setMessages(prev => [...prev, { role: "bot", content: "Lỗi hệ thống, vui lòng thử lại sau!" }]);
+    } finally {
+      setIsLoading(false); // Kết thúc loading
     }
   }
 
   return (
     <>
+      {/* Font Maison từ Google Fonts */}
+      <link href="https://fonts.googleapis.com/css2?family=Maison+Neue:wght@300;400;500;600&display=swap" rel="stylesheet" />
+      
       {/* Nút mở chatbot */}
       {!open && (
         <button
-          className="fixed bottom-4 right-4 w-16 h-16 rounded-full shadow-lg bg-white flex items-center justify-center z-50 border"
+          className="fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-lg bg-white flex items-center justify-center z-50 border-2 border-red-600 hover:bg-red-50 transition-colors"
           onClick={() => setOpen(true)}
           aria-label="Mở chatbot"
         >
@@ -98,35 +107,87 @@ export default function Chatbot() {
 
       {/* Cửa sổ chatbot */}
       {open && (
-        <div className="fixed bottom-4 right-4 bg-white border rounded shadow-lg w-80 z-50 flex flex-col">
-          <div className="flex items-center justify-between p-2 border-b font-bold bg-blue-700 text-white rounded-t">
-            <span>Chatbot Văn Lang</span>
+        <div 
+          className="fixed bottom-6 right-6 bg-white border-2 border-red-600 rounded-lg shadow-xl w-96 h-[500px] z-50 flex flex-col"
+          style={{ fontFamily: 'Maison Neue, sans-serif' }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 border-b-2 border-red-600 bg-red-600 text-white rounded-t-lg">
+            <div className="flex items-center space-x-2">
+              <Image 
+                src={LOGO_URL} 
+                alt="Chatbot" 
+                width={24} 
+                height={24} 
+                className="rounded-full" 
+                unoptimized
+              />
+              <span className="font-medium text-sm">Chatbot Văn Lang</span>
+            </div>
             <button
-              className="text-white text-xl px-2"
+              className="text-white hover:bg-red-700 rounded p-1 transition-colors"
               onClick={() => setOpen(false)}
               aria-label="Đóng"
             >
-              ×
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
-          <div className="p-2 h-64 overflow-y-auto flex flex-col gap-2">
-            {messages.map((msg, idx) => (
-              <div key={idx} className={msg.role === "user" ? "text-right" : "text-left"}>
-                <span className={msg.role === "user" ? "bg-blue-100 px-2 py-1 rounded inline-block" : "bg-gray-100 px-2 py-1 rounded inline-block"}>
-                  {msg.content}
-                </span>
-              </div>
-            ))}
+
+          {/* Messages area */}
+          <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+            <div className="space-y-3">
+              {messages.map((msg, idx) => (
+                <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div 
+                    className={`
+                      max-w-[75%] px-3 py-2 rounded-lg text-xs leading-relaxed
+                      ${msg.role === "user" 
+                        ? "bg-red-600 text-white rounded-br-none" 
+                        : "bg-gray-200 text-gray-800 rounded-bl-none"
+                      }
+                    `}
+                  >
+                    {msg.content}
+                  </div>
+                </div>
+              ))}
+              
+              {/* Loading indicator */}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-200 text-gray-800 px-3 py-2 rounded-lg rounded-bl-none max-w-[75%]">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          <form onSubmit={sendMessage} className="flex border-t">
+
+          {/* Input area */}
+          <form onSubmit={sendMessage} className="flex border-t-2 border-red-600 bg-white rounded-b-lg">
             <input
-              className="flex-1 p-2 outline-none"
+              className="flex-1 px-4 py-3 text-xs outline-none bg-transparent placeholder-gray-500"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Nhập tin nhắn..."
-              autoFocus
+              disabled={isLoading}
+              style={{ fontFamily: 'Maison Neue, sans-serif' }}
             />
-            <button type="submit" className="p-2 bg-blue-600 text-white rounded-r">Gửi</button>
+            <button 
+              type="submit" 
+              disabled={isLoading || !input.trim()}
+              className="px-4 py-3 bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors rounded-br-lg"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            </button>
           </form>
         </div>
       )}
