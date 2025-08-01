@@ -18,8 +18,9 @@ export default function Footer() {
             className="mb-2 rounded-full" 
           />
           <div className="text-lg font-semibold">Trường Đại học Văn Lang</div>
-          <div className="text-sm">Email: hotrosinhvien@vlu.edu.vn</div>
-          <div className="text-sm">Điện thoại: (028) 3823 4567</div>
+          <div className="text-sm">📍 45 Nguyễn Khắc Nhu, Tân Phú, TPHCM</div>
+          <div className="text-sm">📧 hotrosinhvien@vlu.edu.vn</div>
+          <div className="text-sm">📞 (028) 3823 4567</div>
         </div>
         {/* Navigation */}
         <nav className="flex flex-col md:flex-row gap-2 md:gap-6 text-sm text-center md:text-left">

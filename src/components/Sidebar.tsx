@@ -18,35 +18,20 @@ const t: Record<string, { vi: string; en: string }> = {
 export default function Sidebar() {
   const { lang } = useLang()
   return (
-    <aside className="w-64 bg-white rounded shadow-lg p-6 space-y-4 h-fit">
-      <h3 className="font-bold text-lg text-secondary border-b border-gray-200 pb-2">
-        {lang === 'vi' ? 'Danh mục' : 'Categories'}
-      </h3>
-      <nav className="space-y-2">
-        {links.map(l => (
-          <a 
-            key={l.key} 
-            href={l.href} 
-            className="block hover:text-primary hover:bg-bg-light p-2 rounded transition-colors"
-          >
-            {t[l.key][lang]}
-          </a>
-        ))}
-      </nav>
-      <div className="border-t pt-4">
-        <h3 className="font-semibold mb-2 text-secondary">
-          {lang === 'vi' ? 'Thông tin liên hệ' : 'Contact Information'}
-        </h3>
-        <div className="text-sm text-gray-600 space-y-1">
-          <p>
-            {lang === 'vi'
-              ? 'Địa chỉ: 45 Nguyễn Khắc Nhu, Tân Phú, TPHCM'
-              : 'Address: 45 Nguyen Khac Nhu, Tan Phu, HCMC'}
-          </p>
-          <p>📞 (028) 3823 4567</p>
-          <p>📧 support@vlu.edu.vn</p>
-        </div>
+    <div className="bg-white shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4 py-3">
+        <nav className="flex justify-center space-x-8">
+          {links.map(l => (
+            <a 
+              key={l.key} 
+              href={l.href} 
+              className="text-secondary hover:text-primary font-medium transition-colors px-4 py-2 rounded-md hover:bg-bg-light"
+            >
+              {t[l.key][lang]}
+            </a>
+          ))}
+        </nav>
       </div>
-    </aside>
+    </div>
   )
 }

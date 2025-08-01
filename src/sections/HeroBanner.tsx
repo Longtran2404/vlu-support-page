@@ -4,11 +4,12 @@ export default function HeroBanner() {
   return (
     <section className="relative h-[500px] w-full overflow-hidden rounded-lg">
       <Image
-        src="/images/campus1.jpg" // sử dụng hình ảnh có sẵn trong thư mục public
+        src="https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_f2bae11e9d.jpeg&w=1920&q=75"
         alt="Trung tâm Hỗ trợ Sinh viên"
         fill
         className="object-cover"
         priority
+        unoptimized
       />
       <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-start px-6 md:px-20">
         <h1 className="text-4xl md:text-6xl text-white font-bold mb-4">

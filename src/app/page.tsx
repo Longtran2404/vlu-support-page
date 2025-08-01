@@ -12,17 +12,17 @@ import Chatbot from '../components/Chatbot';
 
 export default function HomePage() {
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-gray-100">
+      {/* Navigation */}
+      <NavBar />
+      
+      {/* Categories Navigation Bar */}
       <Sidebar />
 
-      {/* Main Content */}
-      <div className="flex-1">
-        {/* Navigation */}
-        <NavBar />
-
+      {/* Main Content - Centered */}
+      <div className="max-w-7xl mx-auto">
         {/* Main Content Area */}
-        <main className="container mx-auto px-4 py-8">
+        <main className="px-4 py-8">
           {/* Hero Banner */}
           <section id="hero" className="mb-12">
             <HeroBanner />
