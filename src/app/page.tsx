@@ -1,10 +1,10 @@
 "use client";
 
-import HeroBanner from '../sections/HeroBanner';
-import HighlightsSlider from '../sections/HighlightsSlider';
-import IntroSection from '../sections/IntroSection';
-import GallerySection from '../sections/GallerySection';
-import ContactForm from '../sections/ContactForm';
+import HeroBanner from '@/sections/HeroBanner';
+import HighlightsSlider from '@/sections/HighlightsSlider';
+import IntroSection from '@/sections/IntroSection';
+import GallerySection from '@/sections/GallerySection';
+import ContactForm from '@/sections/ContactForm';
 import NavBar from '../components/NavBar';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
@@ -12,7 +12,7 @@ import Chatbot from '../components/Chatbot';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       {/* Navigation */}
       <NavBar />
       

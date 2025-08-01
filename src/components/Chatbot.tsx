@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import Image from 'next/image';
 
-const LOGO_URL = "https://upload.wikimedia.org/wikipedia/vi/thumb/8/85/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png/200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png";
+const LOGO_URL = "https://cdn.subiz.net/file/fishhjrnhfgrhvfpwdtv_acqplocmmgvjdlkwfaos/lalala_60.png";
 const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
 
 export default function Chatbot() {
@@ -44,12 +44,12 @@ export default function Chatbot() {
       }
 
       const data = await res.json();
-      const botReply = data.reply;
-
-      setMessages(prev => [
-        ...prev,
-        { role: "bot", content: botReply || "Không nhận được phản hồi từ webhook!" }
-      ]);
+      let botReply = 'Không nhận được phản hồi từ webhook!';
+      if (Array.isArray(data) && data.length > 0) {
+        const first = (data as any[])[0].json || {};
+        botReply = first.reply || first.output || first.reply_message || botReply;
+      }
+      setMessages(prev => [...prev, { role: 'bot', content: botReply }]);
     } catch {
       setMessages(prev => [...prev, { role: "bot", content: "Lỗi hệ thống, vui lòng thử lại sau!" }]);
     }
@@ -66,14 +66,14 @@ export default function Chatbot() {
         >
           <Image 
             src={LOGO_URL} 
-            alt="Văn Lang Logo" 
+            alt="Chatbot" 
             width={48} 
             height={48} 
             className="rounded-full object-cover" 
             unoptimized
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = 'https://via.placeholder.com/48x48/C8102E/FFFFFF?text=VLU';
+              target.src = 'https://via.placeholder.com/48x48/C8102E/FFFFFF?text=💬';
             }}
           />
         </button>

@@ -1,52 +1,79 @@
 'use client'
 import { useLang } from './LanguageProvider'
 
-import Image from 'next/image'
+import Image from 'next/image';
+import Link from 'next/link';
+
+const LOGO_URL = "https://cdn.haitrieu.com/wp-content/uploads/2022/12/Logo-Dai-Hoc-Van-Lang-H.png";
 
 export default function Footer() {
   const { lang } = useLang()
   return (
-    <footer className="bg-gray-900 text-gray-300 pt-10 pb-4 mt-auto">
-      <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-        {/* Logo & Contact */}
-        <div className="flex flex-col items-center md:items-start gap-2">
-          <Image 
-            src="https://upload.wikimedia.org/wikipedia/vi/thumb/8/85/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png/200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png" 
-            alt="VLU Logo" 
-            width={60} 
-            height={60} 
-            className="mb-2 object-contain" 
-            unoptimized
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = 'https://via.placeholder.com/60x60/C8102E/FFFFFF?text=VLU';
-            }}
-          />
-          <div className="text-lg font-semibold">Trường Đại học Văn Lang</div>
-          <div className="text-sm">📍 45 Nguyễn Khắc Nhu, Tân Phú, TPHCM</div>
-          <div className="text-sm">📧 hotrosinhvien@vlu.edu.vn</div>
-          <div className="text-sm">📞 (028) 3823 4567</div>
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Logo và thông tin chính */}
+          <div className="col-span-1 md:col-span-2">
+            <div className="flex items-center space-x-3 mb-4">
+              <Image
+                src={LOGO_URL}
+                alt="Văn Lang University"
+                width={80}
+                height={27}
+                className="object-contain"
+                unoptimized
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'https://via.placeholder.com/80x27/C8102E/FFFFFF?text=VLU';
+                }}
+              />
+              <div>
+                <h3 className="text-lg font-bold">Trường Đại học Văn Lang</h3>
+                <p className="text-sm text-gray-300">Van Lang University</p>
+              </div>
+            </div>
+            <p className="text-gray-300 mb-4">
+              Trung tâm Hỗ trợ Sinh viên luôn đồng hành cùng các bạn sinh viên 
+              Văn Lang, tạo môi trường học tập lành mạnh với hoạt động trải 
+              nghiệm đa dạng, giúp các bạn có thể phát huy được những thế 
+              mạnh của bản thân.
+            </p>
+          </div>
+
+          {/* Thông tin liên hệ */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Thông tin liên hệ</h4>
+            <div className="space-y-2 text-gray-300">
+              <p>📍 45 Nguyễn Khắc Nhu, Tân Phú, TPHCM</p>
+              <p>📞 (028) 3823 4567</p>
+              <p>✉️ support@vlu.edu.vn</p>
+              <p>🌐 www.vlu.edu.vn</p>
+            </div>
+          </div>
+
+          {/* Liên kết nhanh */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Liên kết nhanh</h4>
+            <div className="space-y-2">
+              <Link href="#gioi-thieu" className="block text-gray-300 hover:text-white transition-colors">
+                Về Văn Lang
+              </Link>
+              <Link href="#dao-tao" className="block text-gray-300 hover:text-white transition-colors">
+                Đào tạo
+              </Link>
+              <Link href="#tuyen-sinh" className="block text-gray-300 hover:text-white transition-colors">
+                Tuyển sinh
+              </Link>
+              <Link href="#doi-song" className="block text-gray-300 hover:text-white transition-colors">
+                Đời sống Văn Lang
+              </Link>
+            </div>
+          </div>
         </div>
-        {/* Navigation */}
-        <nav className="flex flex-col md:flex-row gap-2 md:gap-6 text-sm text-center md:text-left">
-          <a href="#hero" className="hover:text-white transition-colors">
-            {lang === 'vi' ? 'Trang chủ' : 'Home'}
-          </a>
-          <a href="#highlights" className="hover:text-white transition-colors">
-            {lang === 'vi' ? 'Điểm nổi bật' : 'Highlights'}
-          </a>
-          <a href="#gallery" className="hover:text-white transition-colors">
-            {lang === 'vi' ? 'Thư viện ảnh' : 'Gallery'}
-          </a>
-          <a href="#contact" className="hover:text-white transition-colors">
-            {lang === 'vi' ? 'Liên hệ' : 'Contact'}
-          </a>
-        </nav>
-      </div>
-      <div className="max-w-6xl mx-auto px-4 mt-6 text-center text-xs text-gray-400">
-        {lang === 'vi'
-          ? `© ${new Date().getFullYear()} Đại học Văn Lang. All rights reserved.`
-          : `© ${new Date().getFullYear()} Van Lang University. All rights reserved.`}
+
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+          <p>&copy; 2024 Trường Đại học Văn Lang. Tất cả quyền được bảo lưu.</p>
+        </div>
       </div>
     </footer>
   )
