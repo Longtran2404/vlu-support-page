@@ -8,37 +8,46 @@ export default function Footer() {
   return (
     <footer className="bg-[#1a2233] text-[#e3e6f0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
-          {/* Logo và thông tin liên hệ */}
-          <div className="flex flex-col md:w-1/4 mb-6 md:mb-0">
-            <div className="flex items-center space-x-3 mb-4">
-              <Image
-                src={LOGO_URL}
-                alt="Văn Lang University"
-                width={120}
-                height={40}
-                className="object-contain"
-                unoptimized
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = 'https://via.placeholder.com/120x40/C8102E/FFFFFF?text=VLU';
-                }}
-              />
-              <div>
-                <h3 className="text-xl font-bold tracking-wide">VANLANG UNIVERSITY</h3>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm mb-2">
-              <div className="text-gray-400">Email</div>
-              <div className="text-white font-semibold">truyenthong@vlu.edu.vn</div>
-              <div className="text-gray-400">Đào tạo</div>
-              <div className="text-white font-semibold">028.7109 9221</div>
-              <div className="text-gray-400">Tuyển sinh</div>
-              <div className="text-white font-semibold">028.7105 9999</div>
-              <div className="text-gray-400">Hỗ trợ Sinh Viên (Call Center)</div>
-              <div className="text-white font-semibold">028.7106.1111</div>
+        {/* Top row: logo + contact info */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-start mb-8 gap-6">
+          <div className="flex items-center space-x-3">
+            <Image
+              src={LOGO_URL}
+              alt="Văn Lang University"
+              width={120}
+              height={40}
+              className="object-contain"
+              unoptimized
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://via.placeholder.com/120x40/C8102E/FFFFFF?text=VLU';
+              }}
+            />
+            <div>
+              <h3 className="text-xl font-bold tracking-wide">VANLANG UNIVERSITY</h3>
             </div>
           </div>
+          <div className="flex flex-wrap md:flex-nowrap md:ml-8 gap-x-8 gap-y-2 text-sm">
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400">Email</span>
+              <span className="text-white font-semibold">truyenthong@vlu.edu.vn</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400">Đào tạo</span>
+              <span className="text-white font-semibold">028.7109 9221</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400">Tuyển sinh</span>
+              <span className="text-white font-semibold">028.7105 9999</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400">Hỗ trợ Sinh Viên (Call Center)</span>
+              <span className="text-white font-semibold">028.7106.1111</span>
+            </div>
+          </div>
+        </div>
+        {/* Footer columns below */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
           {/* Về chúng tôi */}
           <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
             <h4 className="text-base font-semibold mb-3">Về chúng tôi</h4>
