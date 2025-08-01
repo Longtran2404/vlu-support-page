@@ -25,15 +25,16 @@ export default function Footer() {
         </div>
         {/* Footer columns below: contact info, Về chúng tôi, Truy cập nhanh, Các trường... */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
-          {/* Contact info column */}
+          {/* Contact info column aligned with logo */}
           <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
-            <h4 className="text-base font-semibold mb-3 text-white">Liên hệ</h4>
-            <ul className="space-y-1 text-sm">
-              <li><span className="text-gray-400">Email</span>: <span className="text-white font-semibold">truyenthong@vlu.edu.vn</span></li>
-              <li><span className="text-gray-400">Đào tạo</span>: <span className="text-white font-semibold">028.7109 9221</span></li>
-              <li><span className="text-gray-400">Tuyển sinh</span>: <span className="text-white font-semibold">028.7105 9999</span></li>
-              <li><span className="text-gray-400">Hỗ trợ Sinh Viên (Call Center)</span>: <span className="text-white font-semibold">028.7106.1111</span></li>
-            </ul>
+            <h4 className="text-base font-semibold mb-3 text-white">Email</h4>
+            <div className="text-gray-400 mb-2">truyenthong@vlu.edu.vn</div>
+            <h4 className="text-base font-semibold mb-3 text-white">Đào tạo</h4>
+            <div className="text-gray-400 mb-2">028.7109 9221</div>
+            <h4 className="text-base font-semibold mb-3 text-white">Tuyển sinh</h4>
+            <div className="text-gray-400 mb-2">028.7105 9999</div>
+            <h4 className="text-base font-semibold mb-3 text-white">Hỗ trợ Sinh Viên (Call Center)</h4>
+            <div className="text-gray-400 mb-2">028. 7106. 1111</div>
           </div>
           {/* Về chúng tôi */}
           <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
@@ -48,7 +49,7 @@ export default function Footer() {
           </div>
           {/* Truy cập nhanh */}
           <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
-            <h4 className="text-base font-semibold mb-3">Truy cập nhanh</h4>
+            <h4 className="text-base font-semibold mb-3 text-white">Truy cập nhanh</h4>
             <ul className="space-y-1 text-sm">
               <li><a href="https://vanlangunivn.sharepoint.com/sites/van-ban-so-VLU" className="text-gray-400 hover:text-white transition-colors">Hệ thống Văn bản</a></li>
               <li><a href="https://elearning.vanlanguni.edu.vn/" className="text-gray-400 hover:text-white transition-colors">Hệ thống E-Learning</a></li>
@@ -66,7 +67,7 @@ export default function Footer() {
           </div>
           {/* Các trường và khối đào tạo */}
           <div className="flex flex-col md:w-1/4 mb-6 md:mb-0">
-            <h4 className="text-base font-semibold mb-3">Các trường và khối đào tạo</h4>
+            <h4 className="text-base font-semibold mb-3 text-white">Các trường và khối đào tạo</h4>
             <ul className="space-y-1 text-sm">
               <li><a href="https://www.vlu.edu.vn/academics/faculty-group?faculty=khoa-khach-san-du-lich-va-su-kien#faculties" className="text-gray-400 hover:text-white transition-colors">Du lịch</a></li>
               <li><a href="https://www.vlu.edu.vn/academics/faculty-group?faculty=kien-truc#faculties" className="font-bold text-gray-400 hover:text-white transition-colors">Kiến Trúc</a></li>
