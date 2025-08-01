@@ -1,3 +1,4 @@
+"use client";
 import HeroBanner from '../sections/HeroBanner';
 import IntroSection from '../sections/IntroSection';
 import HighlightsSlider from '../sections/HighlightsSlider';
