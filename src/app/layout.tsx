@@ -3,6 +3,7 @@ import './globals.css'
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import LanguageProvider from '../components/LanguageProvider';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </nav>
         </header>
         <main className="max-w-4xl mx-auto bg-white rounded shadow p-8 my-8 border-b-8 border-black" style={{ backgroundImage: "url('/backblue.gif')", backgroundRepeat: "no-repeat", backgroundPosition: "top right" }}>
-          {children}
+          <LanguageProvider>
+            {children}
+          </LanguageProvider>
         </main>
         <footer className="bg-[#000] text-white text-center py-3 mt-8">
           &copy; {new Date().getFullYear()} Trường Đại học Văn Lang - VLU | Van Lang University
