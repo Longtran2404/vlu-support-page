@@ -8,49 +8,36 @@ export default function Footer() {
   return (
     <footer className="bg-[#1a2233] text-[#e3e6f0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Top row: logo + contact info */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-start mb-8 gap-6">
-          <div className="flex items-center space-x-3">
-            <Image
-              src={LOGO_URL}
-              alt="Văn Lang University"
-              width={120}
-              height={40}
-              className="object-contain"
-              unoptimized
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = 'https://via.placeholder.com/120x40/C8102E/FFFFFF?text=VLU';
-              }}
-            />
-            <div>
-              <h3 className="text-xl font-bold tracking-wide">VANLANG UNIVERSITY</h3>
-            </div>
-          </div>
-          <div className="flex flex-wrap md:flex-nowrap md:ml-8 gap-x-8 gap-y-2 text-sm">
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-400">Email</span>
-              <span className="text-white font-semibold">truyenthong@vlu.edu.vn</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-400">Đào tạo</span>
-              <span className="text-white font-semibold">028.7109 9221</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-400">Tuyển sinh</span>
-              <span className="text-white font-semibold">028.7105 9999</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-400">Hỗ trợ Sinh Viên (Call Center)</span>
-              <span className="text-white font-semibold">028.7106.1111</span>
-            </div>
-          </div>
+        {/* Top row: large centered logo only */}
+        <div className="flex justify-center mb-8">
+          <Image
+            src={LOGO_URL}
+            alt="Văn Lang University"
+            width={200}
+            height={80}
+            className="object-contain"
+            unoptimized
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = 'https://via.placeholder.com/200x80/C8102E/FFFFFF?text=VLU';
+            }}
+          />
         </div>
-        {/* Footer columns below */}
+        {/* Footer columns below: contact info, Về chúng tôi, Truy cập nhanh, Các trường... */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
+          {/* Contact info column */}
+          <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
+            <h4 className="text-base font-semibold mb-3 text-white">Liên hệ</h4>
+            <ul className="space-y-1 text-sm">
+              <li><span className="text-gray-400">Email</span>: <span className="text-white font-semibold">truyenthong@vlu.edu.vn</span></li>
+              <li><span className="text-gray-400">Đào tạo</span>: <span className="text-white font-semibold">028.7109 9221</span></li>
+              <li><span className="text-gray-400">Tuyển sinh</span>: <span className="text-white font-semibold">028.7105 9999</span></li>
+              <li><span className="text-gray-400">Hỗ trợ Sinh Viên (Call Center)</span>: <span className="text-white font-semibold">028.7106.1111</span></li>
+            </ul>
+          </div>
           {/* Về chúng tôi */}
           <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
-            <h4 className="text-base font-semibold mb-3">Về chúng tôi</h4>
+            <h4 className="text-base font-semibold mb-3 text-white">Về chúng tôi</h4>
             <ul className="space-y-1 text-sm">
               <li><a href="https://www.vlu.edu.vn/vi/news-events/news/search" className="text-gray-400 hover:text-white transition-colors">Tin tức</a></li>
               <li><a href="https://www.vlu.edu.vn/vi/news-events/events/search" className="text-gray-400 hover:text-white transition-colors">Sự kiện</a></li>
