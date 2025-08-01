@@ -1,11 +1,13 @@
+// src/components/NavBar.tsx
 'use client'
+import Link from 'next/link'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useLang } from './LanguageProvider'
 
 const navItems = [
   { key: 'home', href: '/' },
-  { key: 'center', href: '#' },
-  { key: 'contact', href: '#' },
+  { key: 'center', href: '/#center' },
+  { key: 'contact', href: '/#contact' },
 ]
 
 const t: Record<string, { vi: string; en: string }> = {
@@ -19,12 +21,18 @@ export default function NavBar() {
   return (
     <header className="bg-blue-700 text-white shadow-sm">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
-        <a href="/" className="text-2xl font-bold">VLU</a>
+        <Link href="/" className="text-2xl font-bold tracking-tight">
+          VLU
+        </Link>
         <nav className="hidden md:flex space-x-6">
           {navItems.map(item => (
-            <a key={item.key} href={item.href} className="hover:underline">
+            <Link
+              key={item.key}
+              href={item.href}
+              className="hover:underline"
+            >
               {t[item.key][lang]}
-            </a>
+            </Link>
           ))}
         </nav>
         <LanguageSwitcher />
