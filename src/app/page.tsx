@@ -1,48 +1,71 @@
 "use client";
 
+import Image from 'next/image';
 import HeroBanner from '../sections/HeroBanner';
 import HighlightsSlider from '../sections/HighlightsSlider';
 import IntroSection from '../sections/IntroSection';
 import GallerySection from '../sections/GallerySection';
 import ContactForm from '../sections/ContactForm';
-import Chatbot from '../components/Chatbot';
+import NavBar from '../components/NavBar';
+import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
+import Chatbot from '../components/Chatbot';
+
 export default function HomePage() {
   return (
-    <>
-      {/* Hero Banner */}
-      <section id="hero">
-        <HeroBanner />
-      </section>
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Sidebar */}
+      <Sidebar />
 
-      {/* Featured Highlight (Slider) */}
-      <section id="featured_highlight" className="mt-8">
-        <HighlightsSlider />
-      </section>
+      {/* Main Content */}
+      <div className="flex-1">
+        {/* Navigation */}
+        <NavBar />
 
-      {/* Highlight Message */}
-      <section id="highlight_message" className="mt-8">
-        <IntroSection />
-      </section>
+        {/* Main Content Area */}
+        <main className="container mx-auto px-4 py-8">
+          {/* Hero Banner */}
+          <section id="hero" className="mb-12">
+            <HeroBanner />
+          </section>
 
-      {/* Gallery */}
-      <section id="gallery" className="mt-8">
-        <GallerySection />
-      </section>
+          {/* Featured Highlights */}
+          <section id="highlights" className="mb-12 bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold mb-6">Điểm nổi bật</h2>
+            <HighlightsSlider />
+          </section>
 
-      {/* Contact Form */}
-      <section id="form" className="mt-8">
-        <ContactForm />
-      </section>
+          {/* Introduction */}
+          <section id="intro" className="mb-12 bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold mb-6">Giới thiệu</h2>
+            <IntroSection />
+          </section>
 
-      {/* Chatbot */}
-      <section id="chatbot" className="mt-8">
-        <Chatbot />
-      </section>
-      
-      {/* Footer */}
-      <Footer />
-      {/* ...existing code... */}
-    </>
+          {/* Gallery */}
+          <section id="gallery" className="mb-12">
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold mb-6">Thư viện ảnh</h2>
+              <GallerySection />
+            </div>
+          </section>
+
+          {/* Contact Form */}
+          <section id="contact" className="mb-12">
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold mb-6">Liên hệ</h2>
+              <ContactForm />
+            </div>
+          </section>
+        </main>
+
+        {/* Footer */}
+        <Footer />
+
+        {/* Chatbot - Fixed Position */}
+        <div className="fixed bottom-4 right-4 z-50">
+          <Chatbot />
+        </div>
+      </div>
+    </div>
   );
 }
