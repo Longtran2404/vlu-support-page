@@ -1,53 +1,112 @@
 'use client';
 
-import Link from 'next/link';
 import { useLang } from './LanguageProvider';
+import { useState, useEffect } from 'react';
 
 export default function SubNavigation() {
   const { lang } = useLang();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { 
-      href: '#gioi-thieu', 
+      href: '#hero', 
       label: {
-        vi: 'Về Văn Lang',
-        en: 'About VLU'
+        vi: 'Trang chủ',
+        en: 'Home'
       }
     },
     { 
-      href: '#dao-tao', 
+      href: '#intro', 
       label: {
-        vi: 'Đào tạo',
-        en: 'Education'
+        vi: 'Giới thiệu',
+        en: 'About'
       }
     },
     { 
-      href: '#tuyen-sinh', 
+      href: '#highlights', 
       label: {
-        vi: 'Tuyển sinh',
-        en: 'Admission'
+        vi: 'Điểm nổi bật',
+        en: 'Highlights'
       }
     },
     { 
-      href: '#nghien-cuu', 
+      href: '#gallery', 
       label: {
-        vi: 'Nghiên cứu khoa học',
-        en: 'Research'
+        vi: 'Thư viện ảnh',
+        en: 'Gallery'
       }
     },
     { 
-      href: '#doi-song', 
+      href: '#quick-access', 
       label: {
-        vi: 'Đời sống Văn Lang',
-        en: 'Campus Life'
+        vi: 'Truy cập nhanh',
+        en: 'Quick Access'
       }
     },
     { 
-      href: '#tin-tuc', 
+      href: '#contact', 
       label: {
-        vi: 'Tin tức & Sự kiện',
-        en: 'News & Events'
+        vi: 'Liên hệ',
+        en: 'Contact'
       }
+    }
+  ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.substring(1);
+    const targetElement = document.getElementById(targetId);
+    
+    if (targetElement) {
+      const offsetTop = targetElement.offsetTop - 120; // Account for fixed header
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  return (
+    <nav className={`sticky top-0 z-40 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-white/95 backdrop-blur-sm shadow-lg' 
+        : 'bg-secondary'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-center">
+          <div className="flex space-x-1 overflow-x-auto scrollbar-hide py-2">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
+                className={`
+                  whitespace-nowrap px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300
+                  ${isScrolled 
+                    ? 'text-gray-700 hover:text-primary hover:bg-red-50' 
+                    : 'text-white hover:text-yellow-300 hover:bg-white/10'
+                  }
+                  hover:transform hover:scale-105
+                `}
+              >
+                {item.label[lang as keyof typeof item.label]}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
     },
   ];
 
