@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 const LOGO_URL = "https://insacmau.com/wp-content/uploads/2023/02/logo-van-lang-600x686.png";
-const DEFAULT_MESSAGE = "Định chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
+const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
@@ -24,9 +24,19 @@ export default function Chatbot() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: input }),
     });
-    const data = await res.json();
 
-    setMessages((prev) => [...prev, { role: "bot", content: data.reply }]);
+    if (!res.ok) {
+      setMessages((prev) => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi!" }]);
+      setInput("");
+      return;
+    }
+
+    const data = await res.json();
+    if (!data.reply) {
+      setMessages((prev) => [...prev, { role: "bot", content: "Không nhận được phản hồi từ webhook!" }]);
+    } else {
+      setMessages((prev) => [...prev, { role: "bot", content: data.reply }]);
+    }
     setInput("");
   }
 
