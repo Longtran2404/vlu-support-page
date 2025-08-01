@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import Image from 'next/image';
 
-const LOGO_URL = "https://insacmau.com/wp-content/uploads/2023/02/logo-van-lang-600x686.png";
+const LOGO_URL = "https://cdn.haitrieu.com/wp-content/uploads/2022/12/Icon-Dai-Hoc-Van-Lang.png";
 const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
 
 export default function Chatbot() {

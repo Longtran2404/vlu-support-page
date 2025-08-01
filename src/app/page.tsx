@@ -29,8 +29,10 @@ export default function HomePage() {
           </section>
 
           {/* Featured Highlights */}
-          <section id="highlights" className="mb-12 bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-6">Điểm nổi bật</h2>
+          <section id="highlights" className="mb-12 -mx-4">
+            <div className="bg-white px-4 py-6">
+              <h2 className="text-2xl font-bold mb-6 max-w-7xl mx-auto px-4">Điểm nổi bật</h2>
+            </div>
             <HighlightsSlider />
           </section>
 
