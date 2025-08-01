@@ -42,7 +42,7 @@ export default function HomePage() {
       
       {/* Footer */}
       <Footer />
-// ...existing code...
+      {/* ...existing code... */}
     </>
   );
 }
