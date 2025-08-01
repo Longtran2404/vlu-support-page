@@ -33,12 +33,29 @@ html {
 /* Override base */
 body {
   @apply font-sans bg-gray-50 text-secondary leading-relaxed;
+  overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 }
 a {
   @apply text-primary hover:underline;
 }
 h1,h2,h3,h4 {
   @apply font-semibold text-secondary;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px; /* Slightly smaller base font size on mobile */
+  }
+  
+  .text-responsive {
+    font-size: clamp(1.25rem, 4vw, 2rem);
+  }
+  
+  /* Ensure no horizontal overflow */
+  * {
+    max-width: 100%;
+  }
 }
 
 /* Custom animations */
@@ -59,9 +76,9 @@ h1,h2,h3,h4 {
 
 /* Custom components */
 .btn-primary {
-  @apply bg-primary hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105;
+  @apply bg-primary hover:bg-red-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105;
 }
 
 .btn-secondary {
-  @apply border-2 border-primary text-primary hover:bg-primary hover:text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+  @apply border-2 border-primary text-primary hover:bg-primary hover:text-white px-4 py-2 md:px-6 md:py-3 rounded-lg font-semibold transition-all duration-300;
 }

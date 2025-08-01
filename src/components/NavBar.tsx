@@ -52,35 +52,40 @@ export default function NavBar() {
     <header className="bg-gray-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo và tên trường */}
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-3">
+          {/* Logo - Centered and responsive */}
+          <div className="flex items-center justify-center flex-1 md:flex-initial md:justify-start">
+            <Link href="/" className="flex items-center">
               <Image
                 src={LOGO_URL}
                 alt="Văn Lang University"
-                width={120}
-                height={40}
+                width={150}
+                height={50}
                 className="object-contain"
                 unoptimized
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.src = 'https://via.placeholder.com/120x40/C8102E/FFFFFF?text=VLU';
+                  target.src = 'https://via.placeholder.com/150x50/C8102E/FFFFFF?text=VLU';
                 }}
               />
-              <span className="text-xl font-bold">{universityTitle[lang]}</span>
             </Link>
           </div>
-          {/* Navigation và chọn ngôn ngữ */}
-          <div className="flex items-center space-x-2">
+          
+          {/* Navigation và chọn ngôn ngữ - Hidden on mobile, visible on desktop */}
+          <div className="hidden md:flex items-center space-x-2">
             {topNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-1 text-sm text-white hover:bg-red-700 transition-colors`}
+                className={`px-3 py-1 text-sm text-white hover:bg-red-700 transition-colors rounded`}
               >
-                {item.label[lang]}
+                {item.label[lang as keyof typeof item.label]}
               </Link>
             ))}
+            <LanguageSwitcher />
+          </div>
+          
+          {/* Mobile language switcher */}
+          <div className="md:hidden">
             <LanguageSwitcher />
           </div>
         </div>
