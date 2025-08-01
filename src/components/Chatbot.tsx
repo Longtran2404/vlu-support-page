@@ -32,7 +32,7 @@ export default function Chatbot() {
     setMessages(prev => [...prev, { role: "user", content: text }]);
 
     try {
-      const res = await fetch("https://reindeer-tight-firstly.ngrok-free.app/webhook-test/4f0cedee-5eea-42d4-bd31-07b76a11ef82", {
+      const res = await fetch("https://reindeer-tight-firstly.ngrok-free.app/webhook/4f0cedee-5eea-42d4-bd31-07b76a11ef82", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text }),
