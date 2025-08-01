@@ -8,33 +8,52 @@ export default function Footer() {
   return (
     <footer className="bg-[#1a2233] text-[#e3e6f0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Top row: large centered logo only */}
-        <div className="flex justify-center mb-8">
-          <Image
-            src={LOGO_URL}
-            alt="Văn Lang University"
-            width={200}
-            height={80}
-            className="object-contain"
-            unoptimized
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = 'https://via.placeholder.com/200x80/C8102E/FFFFFF?text=VLU';
-            }}
-          />
+        {/* Top row: logo + contact info */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-start mb-8 gap-8">
+          <div className="flex justify-center md:justify-start items-center">
+            <Image
+              src={LOGO_URL}
+              alt="Văn Lang University"
+              width={200}
+              height={80}
+              className="object-contain"
+              unoptimized
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://via.placeholder.com/200x80/C8102E/FFFFFF?text=VLU';
+              }}
+            />
+          </div>
+          <div className="flex flex-wrap md:flex-nowrap gap-x-8 gap-y-2 text-sm md:ml-8">
+            <div className="flex flex-col">
+              <h4 className="text-base font-semibold text-white mb-1">Email</h4>
+              <div className="text-gray-400 mb-2">truyenthong@vlu.edu.vn</div>
+            </div>
+            <div className="flex flex-col">
+              <h4 className="text-base font-semibold text-white mb-1">Đào tạo</h4>
+              <div className="text-gray-400 mb-2">028.7109 9221</div>
+            </div>
+            <div className="flex flex-col">
+              <h4 className="text-base font-semibold text-white mb-1">Tuyển sinh</h4>
+              <div className="text-gray-400 mb-2">028.7105 9999</div>
+            </div>
+            <div className="flex flex-col">
+              <h4 className="text-base font-semibold text-white mb-1">Hỗ trợ Sinh Viên (Call Center)</h4>
+              <div className="text-gray-400 mb-2">028. 7106. 1111</div>
+            </div>
+          </div>
         </div>
-        {/* Footer columns below: contact info, Về chúng tôi, Truy cập nhanh, Các trường... */}
+        {/* Footer columns below: Về chúng tôi, Truy cập nhanh, Các trường... */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-8">
-          {/* Contact info column aligned with logo */}
+          {/* Theo dõi (social media) column */}
           <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
-            <h4 className="text-base font-semibold mb-3 text-white">Email</h4>
-            <div className="text-gray-400 mb-2">truyenthong@vlu.edu.vn</div>
-            <h4 className="text-base font-semibold mb-3 text-white">Đào tạo</h4>
-            <div className="text-gray-400 mb-2">028.7109 9221</div>
-            <h4 className="text-base font-semibold mb-3 text-white">Tuyển sinh</h4>
-            <div className="text-gray-400 mb-2">028.7105 9999</div>
-            <h4 className="text-base font-semibold mb-3 text-white">Hỗ trợ Sinh Viên (Call Center)</h4>
-            <div className="text-gray-400 mb-2">028. 7106. 1111</div>
+            <h4 className="text-base font-semibold mb-3 text-white">Theo dõi</h4>
+            <div className="flex space-x-3">
+              <a href="https://www.facebook.com/truongdaihocvanlang" aria-label="Facebook" className="text-gray-400 hover:text-white"><svg width="20" height="20" fill="currentColor"><path d="M18 0H2C.9 0 0 .9 0 2v16c0 1.1.9 2 2 2h8v-7H7v-3h3V7c0-2.8 1.7-4.3 4.2-4.3 1.2 0 2.5.2 2.5.2v3h-1.4c-1.4 0-1.8.7-1.8 1.7v2.3h3l-.4 3h-2.6v7h5c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z"/></svg></a>
+              <a href="https://www.youtube.com/@vanlanguniversity" aria-label="Youtube" className="text-gray-400 hover:text-white"><svg width="20" height="20" fill="currentColor"><path d="M19.6 6.2c-.2-.8-.8-1.4-1.6-1.6C16.2 4.2 10 4.2 10 4.2s-6.2 0-8 .4c-.8.2-1.4.8-1.6 1.6C0 8 0 10 0 10s0 2 .4 3.8c.2.8.8 1.4 1.6 1.6 1.8.4 8 .4 8 .4s6.2 0 8-.4c.8-.2 1.4-.8 1.6-1.6.4-1.8.4-3.8.4-3.8s0-2-.4-3.8zM8 13V7l6 3-6 3z"/></svg></a>
+              <a href="https://www.instagram.com/vanlanguniversity/" aria-label="Instagram" className="text-gray-400 hover:text-white"><svg width="20" height="20" fill="currentColor"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="2"/><rect x="2" y="2" width="16" height="16" rx="4"/></svg></a>
+              <a href="https://www.tiktok.com/@vanlanguniversity" aria-label="Tiktok" className="text-gray-400 hover:text-white"><svg width="20" height="20" fill="currentColor"><path d="M15.5 2v10.5c0 2.5-2 4.5-4.5 4.5S6.5 15 6.5 12.5V7h2v5.5c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5V2h2z"/></svg></a>
+            </div>
           </div>
           {/* Về chúng tôi */}
           <div className="flex flex-col md:w-1/5 mb-6 md:mb-0">
