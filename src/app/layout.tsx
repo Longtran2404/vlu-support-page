@@ -1,40 +1,27 @@
 // src/app/layout.tsx
 import './globals.css'
 import { ReactNode } from 'react'
+import LanguageProvider from '../components/LanguageProvider'
+import NavBar from '../components/NavBar'
+import Sidebar from '../components/Sidebar'
+import Footer from '../components/Footer'
 
-type Props = { children: ReactNode }
-
-export default function RootLayout({ children }: Props) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="vi">
-      <body className="min-h-screen flex flex-col">
-        {/* Header */}
-        <header className="bg-blue-600 text-white p-4">
-          <div className="max-w-6xl mx-auto">
-            <h1 className="text-xl font-semibold">
-              Trung tâm Hỗ trợ Sinh viên VLU
-            </h1>
+      <body className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
+        <LanguageProvider>
+          <NavBar />
+          <div className="flex flex-1 max-w-6xl mx-auto w-full px-4 py-8 space-x-8 md:px-0">
+            <div className="hidden lg:block w-64">
+              <Sidebar />
+            </div>
+            <main className="flex-1 bg-white rounded shadow p-6">
+              {children}
+            </main>
           </div>
-        </header>
-
-        {/* Content area */}
-        <div className="flex flex-1 max-w-6xl mx-auto w-full">
-          {/* Sidebar */}
-          <aside className="w-64 bg-gray-100 p-4 hidden md:block">
-            <nav>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:underline">Trang chủ</a></li>
-                <li><a href="#" className="hover:underline">Dịch vụ</a></li>
-                <li><a href="#" className="hover:underline">Liên hệ</a></li>
-              </ul>
-            </nav>
-          </aside>
-
-          {/* Main */}
-          <main className="flex-1 p-6">
-            {children}
-          </main>
-        </div>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   )
