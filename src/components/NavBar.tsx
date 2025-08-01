@@ -4,17 +4,49 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import LanguageSwitcher from './LanguageSwitcher';
+import { useLang } from './LanguageProvider';
 
 const LOGO_URL = "https://cdn.haitrieu.com/wp-content/uploads/2022/12/Logo-Dai-Hoc-Van-Lang-H.png";
 
 export default function NavBar() {
+  const { lang } = useLang();
 
   const topNavItems = [
-    { href: '#', label: 'Trang chủ', color: 'bg-red-600' },
-    { href: '#sinh-vien', label: 'Sinh viên' },
-    { href: '#nhan-vien', label: 'Nhân viên' },
-    { href: '#cuu-sinh-vien', label: 'Cựu sinh viên' },
+    { 
+      href: '#', 
+      label: {
+        vi: 'Trang chủ',
+        en: 'Home'
+      }, 
+      color: 'bg-red-600' 
+    },
+    { 
+      href: '#sinh-vien', 
+      label: {
+        vi: 'Sinh viên',
+        en: 'Students'
+      }
+    },
+    { 
+      href: '#nhan-vien', 
+      label: {
+        vi: 'Nhân viên',
+        en: 'Staff'
+      }
+    },
+    { 
+      href: '#cuu-sinh-vien', 
+      label: {
+        vi: 'Cựu sinh viên',
+        en: 'Alumni'
+      }
+    },
   ];
+
+  const universityTitle = {
+    vi: 'Trường Đại học Văn Lang - VLU',
+    en: 'Van Lang University - VLU'
+  };
 
   return (
     <header className="bg-gray-800 text-white">
@@ -30,13 +62,10 @@ export default function NavBar() {
                   item.color || ''
                 }`}
               >
-                {item.label}
+                {item.label[lang]}
               </Link>
             ))}
-            <div className="flex items-center space-x-2">
-              <span className="text-sm">🇻🇳 VN</span>
-              <LanguageSwitcher />
-            </div>
+            <LanguageSwitcher />
           </div>
         </div>
       </div>
@@ -58,7 +87,7 @@ export default function NavBar() {
                   target.src = 'https://via.placeholder.com/120x40/C8102E/FFFFFF?text=VLU';
                 }}
               />
-              <span className="text-xl font-bold">Trường Đại học Văn Lang - VLU</span>
+              <span className="text-xl font-bold">{universityTitle[lang]}</span>
             </Link>
           </div>
         </div>

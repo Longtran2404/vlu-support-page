@@ -1,15 +1,54 @@
 'use client';
 
 import Link from 'next/link';
+import { useLang } from './LanguageProvider';
 
 export default function SubNavigation() {
+  const { lang } = useLang();
+
   const navItems = [
-    { href: '#gioi-thieu', label: 'Về Văn Lang' },
-    { href: '#dao-tao', label: 'Đào tạo' },
-    { href: '#tuyen-sinh', label: 'Tuyển sinh' },
-    { href: '#nghien-cuu', label: 'Nghiên cứu khoa học' },
-    { href: '#doi-song', label: 'Đời sống Văn Lang' },
-    { href: '#tin-tuc', label: 'Tin tức & Sự kiện' },
+    { 
+      href: '#gioi-thieu', 
+      label: {
+        vi: 'Về Văn Lang',
+        en: 'About VLU'
+      }
+    },
+    { 
+      href: '#dao-tao', 
+      label: {
+        vi: 'Đào tạo',
+        en: 'Education'
+      }
+    },
+    { 
+      href: '#tuyen-sinh', 
+      label: {
+        vi: 'Tuyển sinh',
+        en: 'Admission'
+      }
+    },
+    { 
+      href: '#nghien-cuu', 
+      label: {
+        vi: 'Nghiên cứu khoa học',
+        en: 'Research'
+      }
+    },
+    { 
+      href: '#doi-song', 
+      label: {
+        vi: 'Đời sống Văn Lang',
+        en: 'Campus Life'
+      }
+    },
+    { 
+      href: '#tin-tuc', 
+      label: {
+        vi: 'Tin tức & Sự kiện',
+        en: 'News & Events'
+      }
+    },
   ];
 
   return (
@@ -22,7 +61,7 @@ export default function SubNavigation() {
               href={item.href}
               className="text-gray-700 hover:text-red-600 px-3 py-2 text-sm font-medium transition-colors duration-200 border-b-2 border-transparent hover:border-red-600"
             >
-              {item.label}
+              {item.label[lang]}
             </Link>
           ))}
         </nav>
