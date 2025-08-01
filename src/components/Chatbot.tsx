@@ -15,10 +15,10 @@ export default function Chatbot() {
   // Gửi tin nhắn tới webhook
   async function sendMessage(e: React.FormEvent) {
     e.preventDefault();
-    if (!input.trim()) return;
+    const text = input.trim();
+    if (!text) return;
 
-    // Xóa input ngay khi gửi
-    setInput("");
+    setInput(""); // Xóa input ngay khi gửi
 
     // Kiểm tra spam: 5 lần gửi trong 2 giây
     const now = Date.now();
@@ -28,27 +28,29 @@ export default function Chatbot() {
       return;
     }
 
-    setMessages(prev => [...prev, { role: "user", content: input }]);
+    setMessages(prev => [...prev, { role: "user", content: text }]);
 
-    // Gửi tới webhook
-    const res = await fetch("https://reindeer-tight-firstly.ngrok-free.app/webhook-test/4f0cedee-5eea-42d4-bd31-07b76a11ef82", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: input }),
-    });
+    try {
+      const res = await fetch("https://reindeer-tight-firstly.ngrok-free.app/webhook-test/4f0cedee-5eea-42d4-bd31-07b76a11ef82", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
 
-    if (!res.ok) {
-      setMessages(prev => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi!" }]);
-      return;
-    }
+      if (!res.ok) {
+        setMessages(prev => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi!" }]);
+        return;
+      }
 
-    const data = await res.json();
-    const botReply = data.reply || data.output; // Ưu tiên reply, nếu không có thì lấy output
+      const data = await res.json();
+      const botReply = data.reply;
 
-    if (!botReply) {
-      setMessages(prev => [...prev, { role: "bot", content: "Không nhận được phản hồi từ webhook!" }]);
-    } else {
-      setMessages(prev => [...prev, { role: "bot", content: botReply }]);
+      setMessages(prev => [
+        ...prev,
+        { role: "bot", content: botReply || "Không nhận được phản hồi từ webhook!" }
+      ]);
+    } catch (error) {
+      setMessages(prev => [...prev, { role: "bot", content: "Lỗi hệ thống, vui lòng thử lại sau!" }]);
     }
   }
 
@@ -93,6 +95,7 @@ export default function Chatbot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Nhập tin nhắn..."
+              autoFocus
             />
             <button type="submit" className="p-2 bg-blue-600 text-white rounded-r">Gửi</button>
           </form>
