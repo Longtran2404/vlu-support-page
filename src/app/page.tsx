@@ -1,8 +1,8 @@
-import HeroBanner from '../components/HeroBanner';
-import IntroSection from '../components/IntroSection';
-import HighlightsSlider from '../components/HighlightsSlider';
-import GallerySection from '../components/GallerySection';
-import ContactForm from '../components/ContactForm';
+import HeroBanner from '../sections/HeroBanner';
+import IntroSection from '../sections/IntroSection';
+import HighlightsSlider from '../sections/HighlightsSlider';
+import GallerySection from '../sections/GallerySection';
+import ContactForm from '../sections/ContactForm';
 
 export default function HomePage() {
   return (
