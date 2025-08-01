@@ -44,11 +44,28 @@ export default function Chatbot() {
       }
 
       const data = await res.json();
+      console.log('Webhook response:', data); // Debug log
+      
       let botReply = 'Không nhận được phản hồi từ webhook!';
-      if (Array.isArray(data) && data.length > 0) {
-        const first = (data as Array<{json?: {reply?: string; output?: string; reply_message?: string}}>)[0].json || {};
-        botReply = first.reply || first.output || first.reply_message || botReply;
+      
+      // Xử lý nhiều format phản hồi có thể có
+      if (data) {
+        if (typeof data === 'string') {
+          botReply = data;
+        } else if (data.message || data.reply || data.output) {
+          botReply = data.message || data.reply || data.output;
+        } else if (Array.isArray(data) && data.length > 0) {
+          const first = data[0];
+          if (first.json) {
+            botReply = first.json.reply || first.json.output || first.json.reply_message || botReply;
+          } else if (first.message || first.reply || first.output) {
+            botReply = first.message || first.reply || first.output;
+          }
+        } else if (data.data && data.data.message) {
+          botReply = data.data.message;
+        }
       }
+      
       setMessages(prev => [...prev, { role: 'bot', content: botReply }]);
     } catch {
       setMessages(prev => [...prev, { role: "bot", content: "Lỗi hệ thống, vui lòng thử lại sau!" }]);
