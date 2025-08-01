@@ -15,22 +15,22 @@ const images: GalleryImage[] = [
     desc: 'Tòa nhà chính của trường Đại học Văn Lang',
   },
   {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_2_2024_24355a1eec.png&w=1920&q=75',
+    src: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80',
     title: 'Thư viện',
     desc: 'Không gian học tập hiện đại',
   },
   {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2Fandrew_neel_ute2_XAFQU_2_I_unsplash_57b973f279.jpg&w=1920&q=50',
+    src: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80',
     title: 'Phòng thí nghiệm',
     desc: 'Trang thiết bị hiện đại',
   },
   {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2FVLU_View010000_Post_moi_2022_077ecc58a4.jpg&w=1920&q=75',
+    src: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=800&q=80',
     title: 'Khu thể thao',
     desc: 'Sân thể thao đa năng',
   },
   {
-    src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
+    src: 'https://images.unsplash.com/photo-1567521464027-f32849384369?w=800&q=80',
     title: 'Căn tin',
     desc: 'Không gian ẩm thực',
   },

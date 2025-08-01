@@ -11,12 +11,18 @@ export default function Footer() {
         {/* Logo & Contact */}
         <div className="flex flex-col items-center md:items-start gap-2">
           <Image 
-            src="https://cdn.haitrieu.com/wp-content/uploads/2022/12/Logo-Dai-Hoc-Van-Lang-H.png" 
+            src="https://upload.wikimedia.org/wikipedia/vi/thumb/8/85/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png/200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png" 
             alt="VLU Logo" 
-            width={120} 
-            height={40} 
+            width={60} 
+            height={60} 
             className="mb-2 object-contain" 
+            unoptimized
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = 'https://via.placeholder.com/60x60/C8102E/FFFFFF?text=VLU';
+            }}
           />
+          <div className="text-lg font-semibold">Trường Đại học Văn Lang</div>
           <div className="text-sm">📍 45 Nguyễn Khắc Nhu, Tân Phú, TPHCM</div>
           <div className="text-sm">📧 hotrosinhvien@vlu.edu.vn</div>
           <div className="text-sm">📞 (028) 3823 4567</div>

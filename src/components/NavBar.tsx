@@ -12,12 +12,20 @@ export default function NavBar() {
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <Image
-            src="https://cdn.haitrieu.com/wp-content/uploads/2022/12/Logo-Dai-Hoc-Van-Lang-H.png"
+            src="https://upload.wikimedia.org/wikipedia/vi/thumb/8/85/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png/200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png"
             alt="VLU Logo"
-            width={120}
+            width={40}
             height={40}
             className="object-contain"
+            unoptimized
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/images/vlu-logo.svg';
+            }}
           />
+          <Link href="/" className="text-xl font-bold text-white">
+            Trường Đại học Văn Lang
+          </Link>
         </div>
         <nav className="hidden md:flex space-x-6">
           <Link href="/" className="hover:text-accent transition-colors">

@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import Image from 'next/image';
 
-const LOGO_URL = "https://cdn.haitrieu.com/wp-content/uploads/2022/12/Icon-Dai-Hoc-Van-Lang.png";
+const LOGO_URL = "https://upload.wikimedia.org/wikipedia/vi/thumb/8/85/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png/200px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_V%C4%83n_Lang.png";
 const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
 
 export default function Chatbot() {
@@ -64,7 +64,18 @@ export default function Chatbot() {
           onClick={() => setOpen(true)}
           aria-label="Mở chatbot"
         >
-          <Image src={LOGO_URL} alt="Văn Lang Logo" width={48} height={48} className="rounded-full object-cover" />
+          <Image 
+            src={LOGO_URL} 
+            alt="Văn Lang Logo" 
+            width={48} 
+            height={48} 
+            className="rounded-full object-cover" 
+            unoptimized
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = 'https://via.placeholder.com/48x48/C8102E/FFFFFF?text=VLU';
+            }}
+          />
         </button>
       )}
 

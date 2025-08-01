@@ -10,17 +10,17 @@ const slides = [
   { 
     title: 'Đồng hành cùng sinh viên', 
     text: 'Luôn đồng hành và hỗ trợ sinh viên trong suốt quá trình học tập tại Văn Lang',
-    image: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_2_2024_24355a1eec.png&w=1920&q=75'
+    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80'
   },
   { 
     title: 'Kiến tạo môi trường học tập',  
     text: 'Xây dựng môi trường học tập hiện đại, sáng tạo và phù hợp với từng sinh viên',
-    image: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2Fandrew_neel_ute2_XAFQU_2_I_unsplash_57b973f279.jpg&w=1920&q=50'
+    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80'
   },
   { 
     title: 'Hoạt động phong trào',  
     text: 'Phối hợp với Đoàn - Hội tổ chức các hoạt động phong trào sinh viên sôi nổi',
-    image: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2FVLU_View010000_Post_moi_2022_077ecc58a4.jpg&w=1920&q=75'
+    image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=1200&q=80'
   },
   { 
     title: 'Ký túc xá',            
