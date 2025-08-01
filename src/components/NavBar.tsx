@@ -76,7 +76,7 @@ export default function NavBar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-1 text-sm hover:bg-red-700 transition-colors ${item.color || ''}`}
+                className={`px-3 py-1 text-sm text-white hover:bg-red-700 transition-colors`}
               >
                 {item.label[lang]}
               </Link>
