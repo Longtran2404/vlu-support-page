@@ -32,6 +32,8 @@ export default function Chatbot() {
     }
 
     const data = await res.json();
+    console.log("Webhook response:", data); // Thêm dòng này để xem dữ liệu trả về
+
     if (!data.reply) {
       setMessages((prev) => [...prev, { role: "bot", content: "Không nhận được phản hồi từ webhook!" }]);
     } else {
