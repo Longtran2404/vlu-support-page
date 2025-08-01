@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+import Image from 'next/image';
 
 const LOGO_URL = "https://insacmau.com/wp-content/uploads/2023/02/logo-van-lang-600x686.png";
 const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
@@ -49,7 +50,7 @@ export default function Chatbot() {
         ...prev,
         { role: "bot", content: botReply || "Không nhận được phản hồi từ webhook!" }
       ]);
-    } catch (error) {
+    } catch {
       setMessages(prev => [...prev, { role: "bot", content: "Lỗi hệ thống, vui lòng thử lại sau!" }]);
     }
   }
@@ -63,7 +64,7 @@ export default function Chatbot() {
           onClick={() => setOpen(true)}
           aria-label="Mở chatbot"
         >
-          <img src={LOGO_URL} alt="Văn Lang Logo" className="w-12 h-12 rounded-full object-cover" />
+          <Image src={LOGO_URL} alt="Văn Lang Logo" width={48} height={48} className="rounded-full object-cover" />
         </button>
       )}
 

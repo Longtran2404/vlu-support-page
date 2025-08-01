@@ -1,6 +1,5 @@
 "use client";
 
-import Image from 'next/image';
 import HeroBanner from '../sections/HeroBanner';
 import HighlightsSlider from '../sections/HighlightsSlider';
 import IntroSection from '../sections/IntroSection';

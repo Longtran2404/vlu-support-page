@@ -1,5 +1,9 @@
+'use client'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 const slides = [
   { title: 'Tiện ích sinh viên', text: 'Quản lý và giải quyết các vấn đề...' },
@@ -12,7 +16,17 @@ export default function HighlightsSlider() {
   return (
     <section className="bg-white py-12">
       <div className="max-w-6xl mx-auto px-4">
-        <Swiper spaceBetween={20} slidesPerView={1} breakpoints={{ 768: { slidesPerView: 2 } }}>
+        <Swiper 
+          spaceBetween={20} 
+          slidesPerView={1} 
+          navigation={true}
+          pagination={{ clickable: true }}
+          modules={[Navigation, Pagination]}
+          breakpoints={{ 
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 }
+          }}
+        >
           {slides.map((s, i) => (
             <SwiperSlide key={i}>
               <div className="p-6 border rounded-lg h-full">
