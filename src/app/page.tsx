@@ -42,7 +42,7 @@ export default function HomePage() {
       
       {/* Footer */}
       <Footer />
-import Footer from '../components/Footer';
+// ...existing code...
     </>
   );
 }
