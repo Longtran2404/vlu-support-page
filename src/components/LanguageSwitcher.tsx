@@ -17,17 +17,16 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500"
+        className="flex items-center space-x-1 px-2 py-1 text-sm bg-transparent text-white hover:bg-gray-700 rounded focus:outline-none"
       >
         <span className="text-base">{currentLang.flag}</span>
-        <span className="font-medium">{currentLang.code.toUpperCase()}</span>
+        <span className="font-medium">{currentLang.code === 'vi' ? 'Tiếng Việt' : 'English'}</span>
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-
       {isOpen && (
-        <div className="absolute top-full mt-1 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-50 min-w-[140px]">
+        <div className="absolute top-full mt-1 right-0 bg-gray-800 border border-gray-700 rounded shadow-lg z-50 min-w-[120px]">
           {languages.map((language) => (
             <button
               key={language.code}
@@ -35,12 +34,12 @@ export default function LanguageSwitcher() {
                 setLang(language.code as 'vi' | 'en')
                 setIsOpen(false)
               }}
-              className={`w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-gray-50 ${
-                lang === language.code ? 'bg-red-50 text-red-600' : 'text-gray-700'
+              className={`w-full flex items-center space-x-2 px-3 py-2 text-sm hover:bg-gray-700 ${
+                lang === language.code ? 'bg-red-600 text-white' : 'text-white'
               }`}
             >
               <span className="text-base">{language.flag}</span>
-              <span>{language.name}</span>
+              <span>{language.code === 'vi' ? 'Tiếng Việt' : 'English'}</span>
             </button>
           ))}
         </div>

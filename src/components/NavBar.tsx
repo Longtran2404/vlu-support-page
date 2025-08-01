@@ -50,29 +50,9 @@ export default function NavBar() {
 
   return (
     <header className="bg-gray-800 text-white">
-      {/* Top navigation bar */}
-      <div className="bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-end items-center h-10 space-x-4">
-            {topNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-3 py-1 text-sm hover:bg-gray-700 transition-colors ${
-                  item.color || ''
-                }`}
-              >
-                {item.label[lang]}
-              </Link>
-            ))}
-            <LanguageSwitcher />
-          </div>
-        </div>
-      </div>
-
-      {/* Main navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+          {/* Logo và tên trường */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3">
               <Image
@@ -89,6 +69,19 @@ export default function NavBar() {
               />
               <span className="text-xl font-bold">{universityTitle[lang]}</span>
             </Link>
+          </div>
+          {/* Navigation và chọn ngôn ngữ */}
+          <div className="flex items-center space-x-2">
+            {topNavItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`px-3 py-1 text-sm hover:bg-red-700 transition-colors ${item.color || ''}`}
+              >
+                {item.label[lang]}
+              </Link>
+            ))}
+            <LanguageSwitcher />
           </div>
         </div>
       </div>
