@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from 'next/image';
 
 const LOGO_URL = "https://cdn.subiz.net/file/fishhjrnhfgrhvfpwdtv_acqplocmmgvjdlkwfaos/lalala_60.png";
@@ -13,6 +13,16 @@ export default function Chatbot() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const sendTimes = useRef<number[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto scroll to bottom khi có tin nhắn mới
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
 
   // Gửi tin nhắn tới webhook
   async function sendMessage(e: React.FormEvent) {
@@ -122,7 +132,7 @@ export default function Chatbot() {
                 className="md:w-6 md:h-6 rounded-full" 
                 unoptimized
               />
-              <span className="font-medium text-xs md:text-sm">Chatbot Văn Lang</span>
+              <span className="font-medium text-xs md:text-sm">Mimi - Nhân viên hỗ trợ</span>
             </div>
             <button
               className="text-white hover:bg-red-700 rounded p-1 transition-colors"
@@ -136,36 +146,41 @@ export default function Chatbot() {
           </div>
 
           {/* Messages area */}
-          <div className="flex-1 p-3 md:p-4 overflow-y-auto bg-gray-50">
-            <div className="space-y-2 md:space-y-3">
-              {messages.map((msg, idx) => (
-                <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div 
-                    className={`
-                      max-w-[85%] md:max-w-[75%] px-2 md:px-3 py-2 rounded-lg text-xs md:text-sm leading-relaxed
-                      ${msg.role === "user" 
-                        ? "bg-red-600 text-white rounded-br-none" 
-                        : "bg-gray-200 text-gray-800 rounded-bl-none"
-                      }
-                    `}
-                  >
-                    {msg.content}
-                  </div>
-                </div>
-              ))}
-              
-              {/* Loading indicator */}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-200 text-gray-800 px-2 md:px-3 py-2 rounded-lg rounded-bl-none max-w-[85%] md:max-w-[75%]">
-                    <div className="flex space-x-1">
-                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div className="flex-1 overflow-hidden bg-gray-50">
+            <div className="h-full overflow-y-auto p-3 md:p-4">
+              <div className="space-y-2 md:space-y-3">
+                {messages.map((msg, idx) => (
+                  <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                    <div 
+                      className={`
+                        max-w-[85%] md:max-w-[75%] px-2 md:px-3 py-2 rounded-lg text-xs md:text-sm leading-relaxed break-words
+                        ${msg.role === "user" 
+                          ? "bg-red-600 text-white rounded-br-none" 
+                          : "bg-gray-200 text-gray-800 rounded-bl-none"
+                        }
+                      `}
+                    >
+                      {msg.content}
                     </div>
                   </div>
-                </div>
-              )}
+                ))}
+                
+                {/* Loading indicator */}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-gray-200 text-gray-800 px-2 md:px-3 py-2 rounded-lg rounded-bl-none max-w-[85%] md:max-w-[75%]">
+                      <div className="flex space-x-1">
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Scroll anchor */}
+                <div ref={messagesEndRef} />
+              </div>
             </div>
           </div>
 
