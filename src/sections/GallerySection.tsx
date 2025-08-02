@@ -10,34 +10,34 @@ interface GalleryImage {
 
 const images: GalleryImage[] = [
   {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_f2bae11e9d.jpeg&w=1920&q=75',
-    title: 'Khuôn viên Văn Lang',
+    src: 'https://vluwebmedia.s3.ap-southeast-1.amazonaws.com/1_f2bae11e9d.jpeg',
+    title: 'Khuôn viên chính VLU',
     desc: 'Tòa nhà chính của trường Đại học Văn Lang với kiến trúc hiện đại',
   },
   {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2Fandrew_neel_ute2_XAFQU_2_I_unsplash_57b973f279.jpg&w=1920&q=50',
+    src: 'https://vluwebmedia.s3.ap-southeast-1.amazonaws.com/1_f2bae11e9d.jpeg',
+    title: 'Hội trường VLU',
+    desc: 'Không gian tổ chức sự kiện và hoạt động học thuật',
+  },
+  {
+    src: 'https://vluwebmedia.s3.ap-southeast-1.amazonaws.com/1_f2bae11e9d.jpeg',
+    title: 'Phòng học thông minh',
+    desc: 'Trang thiết bị hiện đại phục vụ giảng dạy và học tập',
+  },
+  {
+    src: 'https://vluwebmedia.s3.ap-southeast-1.amazonaws.com/1_f2bae11e9d.jpeg',
+    title: 'Khu vực sinh hoạt',
+    desc: 'Không gian thư giãn và giao lưu của sinh viên',
+  },
+  {
+    src: 'https://vluwebmedia.s3.ap-southeast-1.amazonaws.com/andrew_neel_ute2_XAFQU_2_I_unsplash_57b973f279.jpg',
     title: 'Môi trường học tập đa sắc màu',
     desc: 'Kiến tạo môi trường học tập và trải nghiệm đa sắc màu cho sinh viên',
   },
   {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_2_2024_24355a1eec.png&w=1920&q=75',
-    title: 'Hành trình VLU',
+    src: 'https://vluwebmedia.s3.ap-southeast-1.amazonaws.com/1_2_2024_24355a1eec.png',
+    title: 'Đồng hành cùng sinh viên',
     desc: 'Đồng hành cùng sinh viên trên hành trình VLU',
-  },
-  {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_f2bae11e9d.jpeg&w=1920&q=75',
-    title: 'Cơ sở vật chất',
-    desc: 'Hệ thống cơ sở vật chất hiện đại phục vụ học tập',
-  },
-  {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_f2bae11e9d.jpeg&w=1920&q=75',
-    title: 'Hoạt động sinh viên',
-    desc: 'Các hoạt động ngoại khóa và phát triển kỹ năng',
-  },
-  {
-    src: 'https://www.vlu.edu.vn/_next/image?url=https%3A%2F%2Fvluwebmedia.s3.ap-southeast-1.amazonaws.com%2F1_f2bae11e9d.jpeg&w=1920&q=75',
-    title: 'Hỗ trợ sinh viên',
-    desc: 'Trung tâm hỗ trợ sinh viên toàn diện',
   }
 ];
 
@@ -54,23 +54,23 @@ export default function GallerySection() {
         {images.map((img, i) => (
           <div 
             key={i} 
-            className="relative group overflow-hidden rounded-lg shadow-lg cursor-pointer"
+            className="relative group overflow-hidden rounded-lg shadow-lg cursor-pointer bg-white"
             onClick={() => handleImageClick(img)}
           >
-            <div className="aspect-w-16 aspect-h-9">
+            <div className="relative w-full h-64 md:h-72 lg:h-80">
               <Image
                 src={img.src}
                 alt={img.title}
-                width={400}
-                height={300}
-                className="object-cover w-full h-full transform transition-transform duration-300 group-hover:scale-110"
-                unoptimized // Using unoptimized for external images
+                fill
+                className="object-cover transform transition-transform duration-300 group-hover:scale-110"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                unoptimized
               />
             </div>
-            <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-              <h3 className="text-white font-bold text-lg">{img.title}</h3>
-              <p className="text-white text-sm">{img.desc}</p>
-              <button className="mt-2 text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+              <h3 className="text-white font-bold text-lg mb-1">{img.title}</h3>
+              <p className="text-white/90 text-sm mb-3">{img.desc}</p>
+              <button className="self-start text-white bg-primary hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 Xem chi tiết
               </button>
             </div>

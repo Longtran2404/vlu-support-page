@@ -5,6 +5,7 @@ import HighlightsSlider from '@/sections/HighlightsSlider';
 import IntroSection from '@/sections/IntroSection';
 import GallerySection from '@/sections/GallerySection';
 import ContactForm from '@/sections/ContactForm';
+import ContactAccordion from '@/components/ContactAccordion';
 import { useLang } from '../components/LanguageProvider';
 
 export default function HomePage() {
@@ -119,6 +120,9 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Contact Accordion Section */}
+        <ContactAccordion />
       </div>
     </div>
   );

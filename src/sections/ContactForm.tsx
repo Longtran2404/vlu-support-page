@@ -4,9 +4,9 @@ export default function ContactForm() {
       <div className="max-w-6xl mx-auto px-4 flex flex-col lg:flex-row gap-8">
         {/* Info */}
         <div className="flex-1 text-white">
-          <h2 className="text-3xl font-semibold mb-4">Liên hệ để nhận thông tin tư vấn & hỗ trợ</h2>
-          <p>Trung tâm Hỗ trợ Sinh viên</p>
-          <p>Email: hotrosinhvien@vlu.edu.vn</p>
+          <h2 className="text-3xl font-semibold mb-4 text-white">Liên hệ để nhận thông tin tư vấn & hỗ trợ</h2>
+          <p className="text-white">Trung tâm Hỗ trợ Sinh viên</p>
+          <p className="text-white">Email: hotrosinhvien@vlu.edu.vn</p>
         </div>
         {/* Form */}
         <form action="#" className="flex-1 space-y-4 bg-white p-6 rounded-lg shadow-lg">

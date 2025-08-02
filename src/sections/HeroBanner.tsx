@@ -34,7 +34,7 @@ export default function HeroBanner() {
   return (
     <section className="relative h-[500px] md:h-[600px] lg:h-[700px] w-full overflow-hidden">
       <Image
-        src="/images/campus1.jpg"
+        src="https://vluwebmedia.s3.ap-southeast-1.amazonaws.com/1_f2bae11e9d.jpeg"
         alt="Trung tâm Hỗ trợ Sinh viên"
         fill
         className="object-cover"

@@ -1,100 +1,10 @@
 'use client'
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaPhone, FaEnvelope, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const LOGO_URL = "https://cdn.haitrieu.com/wp-content/uploads/2022/12/Logo-Dai-Hoc-Van-Lang-H.png";
 
-interface ContactSection {
-  title: string;
-  content: {
-    address?: string;
-    phone?: string;
-    email?: string;
-    departments?: Array<{
-      name: string;
-      phone?: string;
-      email?: string;
-    }>;
-  };
-}
-
-const contactSections: ContactSection[] = [
-  {
-    title: "Trung tâm Hỗ trợ Sinh viên",
-    content: {
-      address: "Tầng 4, Tòa B, 233A Phan Văn Trị, Phường 11, Quận Bình Thạnh, TP. HCM",
-      phone: "028.7106.1111",
-      email: "hotrosinhvien@vlu.edu.vn",
-      departments: [
-        { name: "Phòng Quản lý Sinh viên", phone: "028.7109.9220", email: "quanlysinhvien@vlu.edu.vn" },
-        { name: "Phòng Công tác Sinh viên", phone: "028.7109.9224", email: "congtacsinhvien@vlu.edu.vn" },
-        { name: "Phòng Học vụ", phone: "028.7109.9221", email: "hocvu@vlu.edu.vn" }
-      ]
-    }
-  },
-  {
-    title: "Trung tâm Phát triển Sinh viên",
-    content: {
-      address: "Tầng 5, Tòa A, 233A Phan Văn Trị, Phường 11, Quận Bình Thạnh, TP. HCM",
-      phone: "028.7109.9230",
-      email: "phatriensinhvien@vlu.edu.vn",
-      departments: [
-        { name: "Phòng Tư vấn Nghề nghiệp", phone: "028.7109.9231", email: "tuvannghiepnghiep@vlu.edu.vn" },
-        { name: "Phòng Kỹ năng mềm", phone: "028.7109.9232", email: "kynangmem@vlu.edu.vn" }
-      ]
-    }
-  },
-  {
-    title: "Trung tâm Tư vấn Tâm lý",
-    content: {
-      address: "Tầng 2, Tòa C, 233A Phan Văn Trị, Phường 11, Quận Bình Thạnh, TP. HCM",
-      phone: "028.7109.9240",
-      email: "tuvantamly@vlu.edu.vn",
-      departments: [
-        { name: "Phòng Tư vấn cá nhân", phone: "028.7109.9241" },
-        { name: "Phòng Tư vấn nhóm", phone: "028.7109.9242" }
-      ]
-    }
-  },
-  {
-    title: "Trung tâm Y tế",
-    content: {
-      address: "Tầng 1, Tòa B, 233A Phan Văn Trị, Phường 11, Quận Bình Thạnh, TP. HCM",
-      phone: "028.7109.9250",
-      email: "yte@vlu.edu.vn",
-      departments: [
-        { name: "Phòng Khám tổng quát", phone: "028.7109.9251" },
-        { name: "Phòng Cấp cứu", phone: "028.7109.9252" }
-      ]
-    }
-  },
-  {
-    title: "Thư viện",
-    content: {
-      address: "Tầng 6-7-8, Tòa A, 233A Phan Văn Trị, Phường 11, Quận Bình Thạnh, TP. HCM",
-      phone: "028.7109.9260",
-      email: "thuvien@vlu.edu.vn",
-      departments: [
-        { name: "Phòng Mượn trả sách", phone: "028.7109.9261" },
-        { name: "Phòng Tài liệu điện tử", phone: "028.7109.9262" }
-      ]
-    }
-  }
-];
-
 export default function Footer() {
-  const [expandedSections, setExpandedSections] = useState<number[]>([]);
-
-  const toggleSection = (index: number) => {
-    setExpandedSections(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
-  };
-
   return (
     <footer className="bg-[#1a2233] text-[#e3e6f0] font-light" style={{ fontFamily: 'Maison, sans-serif' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -131,72 +41,6 @@ export default function Footer() {
               <h4 className="text-base font-semibold text-white mb-1">Hỗ trợ Sinh Viên (Call Center)</h4>
               <div className="text-gray-400 mb-2">028. 7106. 1111</div>
             </div>
-          </div>
-        </div>
-
-        {/* Expandable Contact Information Section */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-white mb-4">Thông tin liên hệ chi tiết</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {contactSections.map((section, index) => (
-              <div key={index} className="bg-[#243245] rounded-lg overflow-hidden">
-                <button
-                  onClick={() => toggleSection(index)}
-                  className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-[#2c3e52] transition-colors"
-                >
-                  <h3 className="font-semibold text-white">{section.title}</h3>
-                  {expandedSections.includes(index) ? (
-                    <FaChevronUp className="text-gray-400" />
-                  ) : (
-                    <FaChevronDown className="text-gray-400" />
-                  )}
-                </button>
-                {expandedSections.includes(index) && (
-                  <div className="px-4 pb-4 text-sm">
-                    {section.content.address && (
-                      <div className="mb-3">
-                        <p className="text-gray-300 font-medium mb-1">Địa chỉ:</p>
-                        <p className="text-gray-400">{section.content.address}</p>
-                      </div>
-                    )}
-                    {section.content.phone && (
-                      <div className="mb-3 flex items-center">
-                        <FaPhone className="text-gray-400 mr-2 text-xs" />
-                        <span className="text-gray-400">{section.content.phone}</span>
-                      </div>
-                    )}
-                    {section.content.email && (
-                      <div className="mb-3 flex items-center">
-                        <FaEnvelope className="text-gray-400 mr-2 text-xs" />
-                        <span className="text-gray-400">{section.content.email}</span>
-                      </div>
-                    )}
-                    {section.content.departments && (
-                      <div>
-                        <p className="text-gray-300 font-medium mb-2">Phòng ban:</p>
-                        {section.content.departments.map((dept, deptIndex) => (
-                          <div key={deptIndex} className="mb-2 pl-2 border-l-2 border-gray-600">
-                            <p className="text-gray-300 font-medium text-xs">{dept.name}</p>
-                            {dept.phone && (
-                              <div className="flex items-center mt-1">
-                                <FaPhone className="text-gray-500 mr-1 text-xs" />
-                                <span className="text-gray-500 text-xs">{dept.phone}</span>
-                              </div>
-                            )}
-                            {dept.email && (
-                              <div className="flex items-center mt-1">
-                                <FaEnvelope className="text-gray-500 mr-1 text-xs" />
-                                <span className="text-gray-500 text-xs">{dept.email}</span>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
         </div>
         {/* Footer columns below: Về chúng tôi, Truy cập nhanh, Các trường... */}
