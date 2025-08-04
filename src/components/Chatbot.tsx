@@ -261,7 +261,7 @@ export default function Chatbot() {
               onScroll={handleScroll}
             >
               <div className="space-y-3">
-                {messages.map((msg, idx) => (
+                {messages.map((msg) => (
                   <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                     <div className="group relative" style={{ maxWidth: "85%" }}>
                       <div 
@@ -388,7 +388,7 @@ export default function Chatbot() {
           {/* Emoji picker */}
           {showEmojiPicker && (
             <div className="emoji-picker absolute bottom-16 left-4 right-4 bg-white border-2 border-gray-300 rounded-lg shadow-xl p-3 max-h-40 overflow-y-auto">
-              <div className="text-xs text-gray-500 mb-2">💡 Phím tắt: :) :D <3 :heart: :laugh: :cry:</div>
+              <div className="text-xs text-gray-500 mb-2">💡 Phím tắt: :) :D {'<3'} :heart: :laugh: :cry:</div>
               <div className="grid grid-cols-8 gap-2">
                 {['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐'].map(emoji => (
                   <button
