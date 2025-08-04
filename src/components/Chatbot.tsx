@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from 'next/image';
 
-const LOGO_URL = "https://tse1.mm.bing.net/th/id/OIP.9C6n1ruNirwrF-YGyh9f6gHaId?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
+const LOGO_URL = "https://insacmau.com/wp-content/uploads/2023/02/logo-van-lang.png";
 const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé! 👋";
 
 // Emoji shortcuts
@@ -247,15 +247,23 @@ export default function Chatbot() {
               <div className="space-y-3">
                 {messages.map((msg, idx) => (
                   <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                    <div className="group relative">
+                    <div className="group relative" style={{ maxWidth: "85%" }}>
                       <div 
                         className={`
-                          px-3 py-2 rounded-lg text-sm leading-relaxed break-words relative inline-block
+                          px-3 py-2 rounded-lg text-sm leading-relaxed relative
                           ${msg.role === "user" 
-                            ? "bg-red-600 text-white rounded-br-none max-w-[85%] md:max-w-[75%]" 
-                            : "bg-gray-200 text-gray-800 rounded-bl-none max-w-[85%] md:max-w-[75%]"
+                            ? "bg-red-600 text-white rounded-br-none" 
+                            : "bg-gray-200 text-gray-800 rounded-bl-none"
                           }
                         `}
+                        style={{
+                          display: "inline-block",
+                          minWidth: "fit-content",
+                          maxWidth: "100%",
+                          wordWrap: "break-word",
+                          overflowWrap: "anywhere",
+                          hyphens: "auto"
+                        }}
                         onDoubleClick={() => setReactionMenu({ show: true, messageId: msg.id })}
                       >
                         {msg.content}
