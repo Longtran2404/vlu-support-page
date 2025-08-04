@@ -41,6 +41,22 @@ export default function Chatbot() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Close reaction menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (reactionMenu.show && !target.closest('.reaction-menu')) {
+        setReactionMenu({ show: false, messageId: null });
+      }
+      if (showEmojiPicker && !target.closest('.emoji-picker') && !target.closest('.emoji-button')) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [reactionMenu.show, showEmojiPicker]);
+
   // Auto scroll to bottom khi có tin nhắn mới
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -266,23 +282,45 @@ export default function Chatbot() {
                         }}
                         onDoubleClick={() => setReactionMenu({ show: true, messageId: msg.id })}
                       >
-                        {msg.content}
-                        
-                        {/* Message reactions */}
-                        {msg.reactions && msg.reactions.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {msg.reactions.map((reaction, rIdx) => (
-                              <span 
-                                key={rIdx} 
-                                className="bg-white bg-opacity-80 px-1 py-0.5 rounded text-xs cursor-pointer hover:bg-opacity-100"
-                                onClick={() => addReaction(msg.id, reaction)}
-                              >
-                                {reaction}
-                              </span>
-                            ))}
-                          </div>
-                        )}
+                        {msg.content.split('\n').map((line, lineIdx) => (
+                          <span key={lineIdx}>
+                            {line.split(' ').map((word, wordIdx) => {
+                              // Check if word is a URL
+                              const urlRegex = /(https?:\/\/[^\s]+)/g;
+                              if (urlRegex.test(word)) {
+                                return (
+                                  <a 
+                                    key={wordIdx}
+                                    href={word} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="underline hover:text-blue-300 break-all"
+                                  >
+                                    {word}
+                                  </a>
+                                );
+                              }
+                              return wordIdx === 0 ? word : ' ' + word;
+                            })}
+                            {lineIdx < msg.content.split('\n').length - 1 && <br />}
+                          </span>
+                        ))}
                       </div>
+
+                      {/* Message reactions - moved outside and below message box */}
+                      {msg.reactions && msg.reactions.length > 0 && (
+                        <div className={`flex flex-wrap gap-1 mt-1 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                          {msg.reactions.map((reaction, rIdx) => (
+                            <span 
+                              key={rIdx} 
+                              className="bg-white border border-gray-300 px-2 py-1 rounded-full text-xs cursor-pointer hover:bg-gray-100 shadow-sm"
+                              onClick={() => addReaction(msg.id, reaction)}
+                            >
+                              {reaction}
+                            </span>
+                          ))}
+                        </div>
+                      )}
 
                       {/* Reaction button - visible on hover */}
                       <button
@@ -331,36 +369,33 @@ export default function Chatbot() {
 
           {/* Reaction menu */}
           {reactionMenu.show && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border-2 border-gray-300 rounded-lg shadow-xl p-3 z-10">
-              <div className="flex space-x-2 mb-2">
+            <div className="reaction-menu absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border-2 border-gray-300 rounded-lg shadow-xl p-3 z-20">
+              <div className="flex space-x-2">
                 {['❤️', '😂', '😮', '😢', '😠', '👍', '👎'].map(emoji => (
                   <button
                     key={emoji}
                     onClick={() => reactionMenu.messageId && addReaction(reactionMenu.messageId, emoji)}
-                    className="text-2xl hover:scale-110 transition-transform"
+                    className="text-2xl hover:scale-110 transition-transform hover:bg-gray-100 rounded p-1"
+                    title={`React với ${emoji}`}
                   >
                     {emoji}
                   </button>
                 ))}
               </div>
-              <button
-                onClick={() => setReactionMenu({ show: false, messageId: null })}
-                className="w-full text-sm text-gray-500 hover:text-gray-700"
-              >
-                Đóng
-              </button>
             </div>
           )}
 
           {/* Emoji picker */}
           {showEmojiPicker && (
-            <div className="absolute bottom-16 left-4 right-4 bg-white border-2 border-gray-300 rounded-lg shadow-xl p-3 max-h-40 overflow-y-auto">
+            <div className="emoji-picker absolute bottom-16 left-4 right-4 bg-white border-2 border-gray-300 rounded-lg shadow-xl p-3 max-h-40 overflow-y-auto">
+              <div className="text-xs text-gray-500 mb-2">💡 Phím tắt: :) :D <3 :heart: :laugh: :cry:</div>
               <div className="grid grid-cols-8 gap-2">
                 {['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐'].map(emoji => (
                   <button
                     key={emoji}
                     onClick={() => addEmoji(emoji)}
-                    className="text-xl hover:scale-110 transition-transform"
+                    className="text-xl hover:scale-110 transition-transform hover:bg-gray-100 rounded p-1"
+                    title={`Thêm ${emoji}`}
                   >
                     {emoji}
                   </button>
@@ -387,7 +422,8 @@ export default function Chatbot() {
                 <button
                   type="button"
                   onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                  className="text-gray-500 hover:text-red-600 transition-colors p-1 flex-shrink-0"
+                  className="emoji-button text-gray-500 hover:text-red-600 transition-colors p-1 flex-shrink-0"
+                  title="Chọn emoji (Phím tắt: :) :D <3)"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
