@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from 'next/image';
 
-const LOGO_URL = "https://cdn.subiz.net/file/fishhjrnhfgrhvfpwdtv_acqplocmmgvjdlkwfaos/lalala_60.png";
+const LOGO_URL = "https://tse1.mm.bing.net/th/id/OIP.9C6n1ruNirwrF-YGyh9f6gHaId?r=0&rs=1&pid=ImgDetMain&o=7&rm=3";
 const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé! 👋";
 
 // Emoji shortcuts
@@ -250,10 +250,10 @@ export default function Chatbot() {
                     <div className="group relative">
                       <div 
                         className={`
-                          max-w-[85%] md:max-w-[75%] px-3 py-2 rounded-lg text-sm leading-relaxed break-words relative
+                          px-3 py-2 rounded-lg text-sm leading-relaxed break-words relative inline-block
                           ${msg.role === "user" 
-                            ? "bg-red-600 text-white rounded-br-none" 
-                            : "bg-gray-200 text-gray-800 rounded-bl-none"
+                            ? "bg-red-600 text-white rounded-br-none max-w-[85%] md:max-w-[75%]" 
+                            : "bg-gray-200 text-gray-800 rounded-bl-none max-w-[85%] md:max-w-[75%]"
                           }
                         `}
                         onDoubleClick={() => setReactionMenu({ show: true, messageId: msg.id })}
@@ -278,7 +278,10 @@ export default function Chatbot() {
 
                       {/* Reaction button - visible on hover */}
                       <button
-                        className="absolute top-0 right-0 transform translate-x-2 -translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-gray-700"
+                        className={`
+                          absolute top-0 transform -translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-gray-700
+                          ${msg.role === "user" ? "left-0 -translate-x-2" : "right-0 translate-x-2"}
+                        `}
                         onClick={() => setReactionMenu({ show: true, messageId: msg.id })}
                       >
                         😊
@@ -290,7 +293,7 @@ export default function Chatbot() {
                 {/* Loading indicator */}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gray-200 text-gray-800 px-3 py-2 rounded-lg rounded-bl-none max-w-[85%] md:max-w-[75%]">
+                    <div className="bg-gray-200 text-gray-800 px-3 py-2 rounded-lg rounded-bl-none inline-block">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
                         <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -362,26 +365,26 @@ export default function Chatbot() {
           <form onSubmit={sendMessage} className="flex items-end border-t-2 border-red-600 bg-white rounded-b-lg p-2">
             <div className="flex-1">
               <div className="flex items-center space-x-2">
-                {/* Emoji button */}
-                <button
-                  type="button"
-                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                  className="text-gray-500 hover:text-red-600 transition-colors p-1"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </button>
-                
                 {/* Input field */}
                 <input
                   className="flex-1 px-3 py-2 text-sm outline-none bg-transparent placeholder-gray-500 min-w-0"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Nhập tin nhắn... (hoặc :) :D <3)"
+                  placeholder="Nhập tin nhắn..."
                   disabled={isLoading}
                   style={{ fontFamily: 'Maison Neue, sans-serif' }}
                 />
+                
+                {/* Emoji button */}
+                <button
+                  type="button"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  className="text-gray-500 hover:text-red-600 transition-colors p-1 flex-shrink-0"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button>
               </div>
             </div>
             
@@ -389,7 +392,7 @@ export default function Chatbot() {
             <button 
               type="submit" 
               disabled={isLoading || !input.trim()}
-              className="ml-2 px-3 py-2 bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors rounded-lg"
+              className="ml-2 px-3 py-2 bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors rounded-lg flex-shrink-0"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
