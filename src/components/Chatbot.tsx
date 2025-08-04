@@ -3,26 +3,96 @@ import { useState, useRef, useEffect } from "react";
 import Image from 'next/image';
 
 const LOGO_URL = "https://cdn.subiz.net/file/fishhjrnhfgrhvfpwdtv_acqplocmmgvjdlkwfaos/lalala_60.png";
-const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé!";
+const DEFAULT_MESSAGE = "Chào bạn, hãy bắt đầu bằng tin nhắn đầu tiên nhé! 👋";
+
+// Emoji shortcuts
+const EMOJI_SHORTCUTS = {
+  ':)': '😊', ':(': '😞', ':D': '😃', ':P': '😛', ':o': '😮',
+  '<3': '❤️', ':heart:': '❤️', ':smile:': '😊', ':sad:': '😞',
+  ':laugh:': '😂', ':cry:': '😢', ':wink:': '😉', ':kiss:': '😘',
+  ':angry:': '😠', ':cool:': '😎', ':think:': '🤔', ':thumbs:': '👍'
+};
 
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<{ role: string; content: string }[]>(
-    [{ role: "bot", content: DEFAULT_MESSAGE }]
-  );
+  const [messages, setMessages] = useState<{ 
+    role: string; 
+    content: string; 
+    id: number;
+    reactions?: string[];
+  }[]>([{ role: "bot", content: DEFAULT_MESSAGE, id: Date.now() }]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [reactionMenu, setReactionMenu] = useState<{ show: boolean; messageId: number | null }>({ show: false, messageId: null });
+  const [isMobile, setIsMobile] = useState(false);
   const sendTimes = useRef<number[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  // Check if mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Auto scroll to bottom khi có tin nhắn mới
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Check if user scrolled up
+  const handleScroll = () => {
+    if (messagesContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 50;
+      setShowScrollToBottom(!isAtBottom);
+    }
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
+
+  // Convert emoji shortcuts to emojis
+  const processEmojis = (text: string) => {
+    let processed = text;
+    Object.entries(EMOJI_SHORTCUTS).forEach(([shortcut, emoji]) => {
+      processed = processed.replace(new RegExp(shortcut.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), emoji);
+    });
+    return processed;
+  };
+
+  // Add emoji to input
+  const addEmoji = (emoji: string) => {
+    setInput(prev => prev + emoji);
+    setShowEmojiPicker(false);
+  };
+
+  // Add reaction to message
+  const addReaction = (messageId: number, emoji: string) => {
+    setMessages(prev => prev.map(msg => {
+      if (msg.id === messageId) {
+        const reactions = msg.reactions || [];
+        const newReactions = reactions.includes(emoji) 
+          ? reactions.filter(r => r !== emoji)
+          : [...reactions, emoji];
+        return { ...msg, reactions: newReactions };
+      }
+      return msg;
+    }));
+    setReactionMenu({ show: false, messageId: null });
+  };
+
+  // Clear chat
+  const clearChat = () => {
+    setMessages([{ role: "bot", content: DEFAULT_MESSAGE, id: Date.now() }]);
+  };
 
   // Gửi tin nhắn tới webhook
   async function sendMessage(e: React.FormEvent) {
@@ -32,17 +102,19 @@ export default function Chatbot() {
 
     setInput(""); // Xóa input ngay khi gửi
     setIsLoading(true); // Bắt đầu loading
+    setShowEmojiPicker(false); // Đóng emoji picker
 
     // Kiểm tra spam: 5 lần gửi trong 2 giây
     const now = Date.now();
     sendTimes.current = [...sendTimes.current, now].filter(t => now - t <= 2000);
     if (sendTimes.current.length >= 5) {
-      setMessages(prev => [...prev, { role: "bot", content: "Bạn đang spam, vui lòng chờ!" }]);
+      setMessages(prev => [...prev, { role: "bot", content: "Bạn đang spam, vui lòng chờ! 🚫", id: Date.now() }]);
       setIsLoading(false);
       return;
     }
 
-    setMessages(prev => [...prev, { role: "user", content: text }]);
+    const processedText = processEmojis(text);
+    setMessages(prev => [...prev, { role: "user", content: processedText, id: Date.now() }]);
 
     try {
       const res = await fetch("https://reindeer-tight-firstly.ngrok-free.app/webhook/4f0cedee-5eea-42d4-bd31-07b76a11ef82", {
@@ -52,7 +124,7 @@ export default function Chatbot() {
       });
 
       if (!res.ok) {
-        setMessages(prev => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi!" }]);
+        setMessages(prev => [...prev, { role: "bot", content: "Webhook lỗi hoặc không phản hồi! ❌", id: Date.now() }]);
         setIsLoading(false);
         return;
       }
@@ -60,7 +132,7 @@ export default function Chatbot() {
       const data = await res.json();
       console.log('Webhook response:', data); // Debug log
       
-      let botReply = 'Không nhận được phản hồi từ webhook!';
+      let botReply = 'Không nhận được phản hồi từ webhook! 🤖';
       
       // Xử lý nhiều format phản hồi có thể có
       if (data) {
@@ -80,9 +152,10 @@ export default function Chatbot() {
         }
       }
       
-      setMessages(prev => [...prev, { role: 'bot', content: botReply }]);
+      const processedReply = processEmojis(botReply);
+      setMessages(prev => [...prev, { role: 'bot', content: processedReply, id: Date.now() }]);
     } catch {
-      setMessages(prev => [...prev, { role: "bot", content: "Lỗi hệ thống, vui lòng thử lại sau!" }]);
+      setMessages(prev => [...prev, { role: "bot", content: "Lỗi hệ thống, vui lòng thử lại sau! ⚠️", id: Date.now() }]);
     } finally {
       setIsLoading(false); // Kết thúc loading
     }
@@ -118,49 +191,98 @@ export default function Chatbot() {
       {/* Cửa sổ chatbot */}
       {open && (
         <div 
-          className="fixed inset-x-4 bottom-4 md:bottom-6 md:right-6 md:left-auto bg-white border-2 border-red-600 rounded-lg shadow-xl w-auto md:w-96 h-[80vh] md:h-[500px] max-h-[600px] z-50 flex flex-col"
+          className={`
+            fixed z-50 bg-white border-2 border-red-600 rounded-lg shadow-xl flex flex-col
+            ${isMobile 
+              ? 'inset-0 w-full h-full rounded-none' 
+              : 'bottom-6 right-6 w-96 h-[500px] max-h-[600px]'
+            }
+          `}
           style={{ fontFamily: 'Maison Neue, sans-serif' }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between p-3 md:p-4 border-b-2 border-red-600 bg-red-600 text-white rounded-t-lg">
+          <div className="flex items-center justify-between p-4 border-b-2 border-red-600 bg-red-600 text-white rounded-t-lg">
             <div className="flex items-center space-x-2">
               <Image 
                 src={LOGO_URL} 
                 alt="Chatbot" 
-                width={20} 
-                height={20} 
-                className="md:w-6 md:h-6 rounded-full" 
+                width={24} 
+                height={24} 
+                className="rounded-full" 
                 unoptimized
               />
-              <span className="font-medium text-xs md:text-sm">Mimi - Nhân viên hỗ trợ</span>
+              <span className="font-medium text-sm">Mimi - Nhân viên hỗ trợ</span>
             </div>
-            <button
-              className="text-white hover:bg-red-700 rounded p-1 transition-colors"
-              onClick={() => setOpen(false)}
-              aria-label="Đóng"
-            >
-              <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center space-x-2">
+              {/* Clear chat button */}
+              <button
+                className="text-white hover:bg-red-700 rounded p-1 transition-colors"
+                onClick={clearChat}
+                title="Tạo cuộc trò chuyện mới"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+              {/* Close button */}
+              <button
+                className="text-white hover:bg-red-700 rounded p-1 transition-colors"
+                onClick={() => setOpen(false)}
+                aria-label="Đóng"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Messages area */}
-          <div className="flex-1 overflow-hidden bg-gray-50">
-            <div className="h-full overflow-y-auto p-3 md:p-4">
-              <div className="space-y-2 md:space-y-3">
+          <div className="flex-1 overflow-hidden bg-gray-50 relative">
+            <div 
+              ref={messagesContainerRef}
+              className="h-full overflow-y-auto p-4"
+              onScroll={handleScroll}
+            >
+              <div className="space-y-3">
                 {messages.map((msg, idx) => (
-                  <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                    <div 
-                      className={`
-                        max-w-[85%] md:max-w-[75%] px-2 md:px-3 py-2 rounded-lg text-xs md:text-sm leading-relaxed break-words
-                        ${msg.role === "user" 
-                          ? "bg-red-600 text-white rounded-br-none" 
-                          : "bg-gray-200 text-gray-800 rounded-bl-none"
-                        }
-                      `}
-                    >
-                      {msg.content}
+                  <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                    <div className="group relative">
+                      <div 
+                        className={`
+                          max-w-[85%] md:max-w-[75%] px-3 py-2 rounded-lg text-sm leading-relaxed break-words relative
+                          ${msg.role === "user" 
+                            ? "bg-red-600 text-white rounded-br-none" 
+                            : "bg-gray-200 text-gray-800 rounded-bl-none"
+                          }
+                        `}
+                        onDoubleClick={() => setReactionMenu({ show: true, messageId: msg.id })}
+                      >
+                        {msg.content}
+                        
+                        {/* Message reactions */}
+                        {msg.reactions && msg.reactions.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {msg.reactions.map((reaction, rIdx) => (
+                              <span 
+                                key={rIdx} 
+                                className="bg-white bg-opacity-80 px-1 py-0.5 rounded text-xs cursor-pointer hover:bg-opacity-100"
+                                onClick={() => addReaction(msg.id, reaction)}
+                              >
+                                {reaction}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Reaction button - visible on hover */}
+                      <button
+                        className="absolute top-0 right-0 transform translate-x-2 -translate-y-2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-gray-700"
+                        onClick={() => setReactionMenu({ show: true, messageId: msg.id })}
+                      >
+                        😊
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -168,11 +290,11 @@ export default function Chatbot() {
                 {/* Loading indicator */}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gray-200 text-gray-800 px-2 md:px-3 py-2 rounded-lg rounded-bl-none max-w-[85%] md:max-w-[75%]">
+                    <div className="bg-gray-200 text-gray-800 px-3 py-2 rounded-lg rounded-bl-none max-w-[85%] md:max-w-[75%]">
                       <div className="flex space-x-1">
-                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>
@@ -182,24 +304,94 @@ export default function Chatbot() {
                 <div ref={messagesEndRef} />
               </div>
             </div>
+
+            {/* Scroll to bottom button */}
+            {showScrollToBottom && (
+              <button
+                onClick={scrollToBottom}
+                className="absolute bottom-4 right-4 bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg hover:bg-red-700 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+              </button>
+            )}
           </div>
 
+          {/* Reaction menu */}
+          {reactionMenu.show && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border-2 border-gray-300 rounded-lg shadow-xl p-3 z-10">
+              <div className="flex space-x-2 mb-2">
+                {['❤️', '😂', '😮', '😢', '😠', '👍', '👎'].map(emoji => (
+                  <button
+                    key={emoji}
+                    onClick={() => reactionMenu.messageId && addReaction(reactionMenu.messageId, emoji)}
+                    className="text-2xl hover:scale-110 transition-transform"
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => setReactionMenu({ show: false, messageId: null })}
+                className="w-full text-sm text-gray-500 hover:text-gray-700"
+              >
+                Đóng
+              </button>
+            </div>
+          )}
+
+          {/* Emoji picker */}
+          {showEmojiPicker && (
+            <div className="absolute bottom-16 left-4 right-4 bg-white border-2 border-gray-300 rounded-lg shadow-xl p-3 max-h-40 overflow-y-auto">
+              <div className="grid grid-cols-8 gap-2">
+                {['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐'].map(emoji => (
+                  <button
+                    key={emoji}
+                    onClick={() => addEmoji(emoji)}
+                    className="text-xl hover:scale-110 transition-transform"
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Input area */}
-          <form onSubmit={sendMessage} className="flex border-t-2 border-red-600 bg-white rounded-b-lg">
-            <input
-              className="flex-1 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm outline-none bg-transparent placeholder-gray-500"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Nhập tin nhắn..."
-              disabled={isLoading}
-              style={{ fontFamily: 'Maison Neue, sans-serif' }}
-            />
+          <form onSubmit={sendMessage} className="flex items-end border-t-2 border-red-600 bg-white rounded-b-lg p-2">
+            <div className="flex-1">
+              <div className="flex items-center space-x-2">
+                {/* Emoji button */}
+                <button
+                  type="button"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  className="text-gray-500 hover:text-red-600 transition-colors p-1"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button>
+                
+                {/* Input field */}
+                <input
+                  className="flex-1 px-3 py-2 text-sm outline-none bg-transparent placeholder-gray-500 min-w-0"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Nhập tin nhắn... (hoặc :) :D <3)"
+                  disabled={isLoading}
+                  style={{ fontFamily: 'Maison Neue, sans-serif' }}
+                />
+              </div>
+            </div>
+            
+            {/* Send button */}
             <button 
               type="submit" 
               disabled={isLoading || !input.trim()}
-              className="px-3 md:px-4 py-2 md:py-3 bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors rounded-br-lg"
+              className="ml-2 px-3 py-2 bg-red-600 text-white hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors rounded-lg"
             >
-              <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
             </button>
